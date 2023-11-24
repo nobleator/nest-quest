@@ -10,7 +10,7 @@ let main args =
         0
     | first::rest  ->
         printfn "2+ args"
-        let t = Parser.parseOld first
+        let t = Parser.parse first
         // Geocoding lookups for eval target(s)
         let l = List.map Geocoder.geocode rest |> List.choose id
         List.map (fun x ->

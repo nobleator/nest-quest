@@ -90,17 +90,3 @@ let parse input =
     tokenize input
     |> fun x -> parseExpression x 0
     |> fst
-
-let parseOld raw =
-    AST.BranchNode {Weight=1.0; Operator=AST.LogicalOperator.And; Children=[
-            AST.BranchNode {Weight=0.5; Operator=AST.LogicalOperator.Or; Children=[
-                AST.LeafNode {Weight=1.0; Tag="brand=Harris Teeter"; Operator=AST.ArithmeticOperator.Eq; Target=1000.0};
-                AST.LeafNode {Weight=1.0; Tag="brand=Whole Foods Market"; Operator=AST.ArithmeticOperator.Eq; Target=1200.0};
-                AST.LeafNode {Weight=1.0; Tag="brand=Trader Joe's"; Operator=AST.ArithmeticOperator.Eq; Target=1200.0};
-            ]};
-            AST.BranchNode {Weight=0.5; Operator=AST.LogicalOperator.And; Children=[
-                AST.LeafNode {Weight=0.2; Tag="highway=cycleway"; Operator=AST.ArithmeticOperator.Eq; Target=800.0};
-                AST.LeafNode {Weight=0.12; Tag="leisure=park"; Operator=AST.ArithmeticOperator.Eq; Target=1600.0};
-                AST.LeafNode {Weight=0.18; Tag="amenity=school"; Operator=AST.ArithmeticOperator.Eq; Target=2000.0};
-            ]}
-        ]}
