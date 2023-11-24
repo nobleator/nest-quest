@@ -14,7 +14,7 @@ let main args =
         // Geocoding lookups for eval target(s)
         let l = List.map Geocoder.geocode rest |> List.choose id
         List.map (fun x ->
-            AST.traverse Evaluators.OsmEvaluator.score x t
+            AST.traverse Evaluators.OverpassEvaluator.score x t
                 |> fun score -> $"{x.Address}: {score}"
             ) l
             |> fun x -> printfn $"{x}"

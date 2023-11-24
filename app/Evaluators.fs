@@ -4,7 +4,7 @@ open FSharp.Data
 open DomainTypes
 open AST
 
-module OsmEvaluator =
+module OverpassEvaluator =
     type OverpassResult = JsonProvider<"overpass_sample.json">
     let [<Literal>] url = "https://www.overpass-api.de/api/interpreter"
 
