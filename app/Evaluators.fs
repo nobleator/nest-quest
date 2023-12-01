@@ -31,3 +31,17 @@ module OverpassEvaluator =
         | _ ->
             printfn $"oops, invalid tag format: {leaf.Tag}"
             0
+
+module BaseEvaluator =
+    // TODO: move to interface/abstract implementation?
+    type Evaluator =
+    | Overpass = 0
+
+    let evaluate e t l =
+        match e with
+        | Evaluator.Overpass ->
+            List.map Geocoder.geocode l
+            |> List.choose id
+            |> List.map (fun x -> AST.traverse OverpassEvaluator.score x t |> fun score -> x.Address, score)
+            |> Map.ofList
+        | _ -> failwith "Unsupported evaluator type"

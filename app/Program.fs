@@ -6,7 +6,7 @@ let main args =
                     |> fun t -> printfn $"{t}"
                     |> fun x -> 0 // Return 0. This indicates success.
     | first::rest -> Parser.parse first
-                        |> fun t -> Evaluators.MasterEvaluator.evaluate Evaluators.MasterEvaluator.Evaluator.Overpass t rest
+                        |> fun t -> Evaluators.BaseEvaluator.evaluate Evaluators.BaseEvaluator.Evaluator.Overpass t rest
                         |> fun x -> printfn $"{x}"
                         |> fun x -> 0 // Return 0. This indicates success.
     | _ -> -1
