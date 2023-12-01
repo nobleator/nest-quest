@@ -4,6 +4,9 @@ open FSharp.Data
 open DomainTypes
 open AST
 
+type EvaluatorEnum =
+| Overpass = 0
+
 module OverpassEvaluator =
     type OverpassResult = JsonProvider<"overpass_sample.json">
     let [<Literal>] url = "https://www.overpass-api.de/api/interpreter"
@@ -34,12 +37,10 @@ module OverpassEvaluator =
 
 module BaseEvaluator =
     // TODO: move to interface/abstract implementation?
-    type Evaluator =
-    | Overpass = 0
 
     let evaluate e t l =
         match e with
-        | Evaluator.Overpass ->
+        | EvaluatorEnum.Overpass ->
             List.map Geocoder.geocode l
             |> List.choose id
             |> List.map (fun x -> AST.traverse OverpassEvaluator.score x t |> fun score -> x.Address, score)
