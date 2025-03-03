@@ -1,0 +1,5 @@
+# Redirect requests to the frontend
+http://localhost {
+  reverse_proxy /api/* backend:5000
+  file_server
+}

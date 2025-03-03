@@ -16,3 +16,4 @@ app/bin
 app/obj
 app.tests/bin
 app.tests/obj
+.fake
