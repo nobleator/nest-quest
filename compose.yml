@@ -3,11 +3,11 @@ services:
     build:
       context: ./web-api
     ports:
-      - "5000:5000"
+      - "5001:5001"
     volumes:
       - app-data:/app/data
     environment:
-      - ASPNETCORE_URLS=http://+:5000      
+      - ASPNETCORE_URLS=http://+:5001
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/cache.db
 
   web-ui:
