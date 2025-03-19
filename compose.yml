@@ -1,27 +1,34 @@
-version: "3.8"
-
 services:
-  backend:
+  web-api:
     build:
-      context: ./backend
+      context: ./web-api
     ports:
       - "5000:5000"
+    volumes:
+      - app-data:/app/data
     environment:
-      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_URLS=http://+:5000      
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/cache.db
 
-  frontend:
+  web-ui:
     build:
-      context: ./frontend
+      context: ./web-ui
     ports:
       - "8080:80"
 
   caddy:
     image: caddy:alpine
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./web-server/:/etc/caddy/
+      - ./web-ui/:/usr/share/caddy/
     depends_on:
-      - backend
-      - frontend
+      - web-ui
+      - web-api
+
+volumes:
+  app-data:

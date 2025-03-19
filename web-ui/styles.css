@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+}
+.container {
+    display: flex;
+    flex: 1;
+}
+.left {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+.right {
+    flex: 2;
+    padding: 20px;
+    background-color: #e0e0e0;
+    display: flex; /* Make right section a flex container */
+}
+#map {
+    width: 100%;
+    height: 100%; /* Set height to fill the container */
+}
+.dropdown-container {
+    display: flex; /* Align items in a row */
+    align-items: center; /* Center items vertically */
+    margin: 10px 0; /* Space between dropdowns */
+}
+select {
+    flex: 1; /* Allow select to take available space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+input {
+    width: 80px;
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+button {
+    padding: 10px;
+    margin-left: 10px;
+}

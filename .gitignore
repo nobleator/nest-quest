@@ -17,3 +17,12 @@ app/obj
 app.tests/bin
 app.tests/obj
 .fake
+
+web-api/bin
+web-api/obj
+web-api/.vscode/*
+!web-api/.vscode/settings.json
+!web-api/.vscode/tasks.json
+!web-api/.vscode/launch.json
+!web-api/.vscode/extensions.json
+!web-api/.vscode/*.code-snippets
