@@ -2,9 +2,9 @@ using System.Text.Json;
 
 public class CacheService<T>
 {
-    private readonly CacheDbContext _dbContext;
+    private readonly AppDbContext _dbContext;
 
-    public CacheService(CacheDbContext dbContext)
+    public CacheService(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }

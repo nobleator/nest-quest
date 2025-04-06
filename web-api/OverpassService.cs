@@ -1,91 +1,133 @@
 using RestSharp;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Text.Json;
-using System.Web;
 using OverpassApiModel;
+using POI = PointOfInterest;
 
 namespace NestQuest.Services;
 
 /*
-[out:json][timeout:25];
+These examples can be run via Overpass turbo (https://overpass-turbo.eu/).
+
+https://dev.overpass-api.de/overpass-doc/en/criteria/union.html
+
+The following query is equivalent to the English sentence:
+"Return all nodes within the provided bounding box in JSON format where the node contains a tag of amentity=cafe or leisure=park."
+This uses an OR syntax via a UNION (defined via `(...)`):
+```
+[out:json];
+(
+  node[amenity=cafe]({{bbox}});
+  node[leisure=park]({{bbox}});
+);
+out;
+```
+
+The following query is equivalent to the English sentence:
+"Return all nodes within the provided bounding box in JSON format where the node contains tags of amentity=cafe and cuisine=coffee_shop."
+This uses an AND syntax:
+```
+[out:json];
+node[amenity=cafe][cuisine=coffee_shop]({{bbox}});
+out;
+```
+
+The following query is equivalent to the English sentence:
+"Return all nodes within the provided bounding box in JSON format where the node either 1) contains tags of amentity=cafe and cuisine=coffee_shop or 2) contains the tag leisure=park."
+This uses both AND and OR syntax combined:
+```
+[out:json];
+(
+  node[amenity=cafe][cuisine=coffee_shop]({{bbox}});
+  node[leisure=park]({{bbox}});
+);
+out;
+```
+
+When running programmatically, i.e. not via overpass turbo, replace the {{bbox}} placeholder with latitude and longitude values like so:
+```
+[out:json];
 node["amenity"](bbox=-0.489,51.28,0.236,51.686);
 out;
+```
 
-[out:json][timeout:25];
-node(51.28,-0.489,51.686,0.236);
+(TBD) It is also generally recommended to provide a timeout setting to ensure accidentally huge results fail gracefully:
+```
+[out:json][timeout:10];
+node["amenity"](bbox=-0.489,51.28,0.236,51.686);
 out;
+```
 */
 
 public class OverpassService
 {
-    /*
-    TODO: map OSM tags and values to search terms
-    E.g., the search term "library" should map to "amenity"="library", while "park" maps to "leisure"="park"
-    */
     private CacheService<OverpassApiResponse> _cache;
-    public OverpassService(CacheService<OverpassApiResponse> cache)
+    private readonly RateLimiter _rateLimiter;
+    public OverpassService(CacheService<OverpassApiResponse> cache, RateLimiter rateLimiter)
     {
         _cache = cache;
+        _rateLimiter = rateLimiter;
     }
     
-    public async Task<IEnumerable<string>> GetDistinctAmenityValues(double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
+    public async Task<IEnumerable<object>> GetPoiByCategoryAndBbox(POI.Category cat, double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
+    {
+        // Console.WriteLine("Making request for Overpass data...");
+        var query = $"[out:json];node{GetTagsForCategory(cat)}({minLat},{minLon},{maxLat},{maxLon});out;";
+        var response = await _cache.GetOrFetchDataAsync(query, async () => {
+            return await _rateLimiter.ExecuteAsync(async () => {
+                var client = new RestClient();
+                var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
+                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.AddParameter("data", query);
+                // Console.WriteLine("Fetching data...");
+                return await client.PostAsync<OverpassApiResponse>(request, token);
+            });
+        });
+        // Console.WriteLine("Request completed.");
+        // Console.WriteLine(response);
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(response, options);
+        // Console.WriteLine(json);
+        var poiLocations = response.Elements
+            .Select(e => new { location = new[] { e.Lat, e.Lon }, type = cat.ToString() });
+      return poiLocations;
+    }
+
+    public async Task<int> GetCountOfMatches(Criterion criterion, double lat, double lon, CancellationToken token)
     {
         Console.WriteLine("Making request for Overpass data...");
-        var query = ToOverpassQL(minLon, minLat, maxLon, maxLat);
+        var query = $"[out:json];node{GetTagsForCategory(criterion.Category)}(around:{criterion.Tolerance},{lat},{lon});out count;";
+        Console.WriteLine(query);
         var response = await _cache.GetOrFetchDataAsync(query, async () => {
-            var client = new RestClient();
-            var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
-            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-            request.AddParameter("data", query);
-            Console.WriteLine("Fetching data...");
-            return await client.PostAsync<OverpassApiResponse>(request, token);
+            return await _rateLimiter.ExecuteAsync(async () => {
+                var client = new RestClient();
+                var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
+                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.AddParameter("data", query);
+                Console.WriteLine("Fetching data...");
+                return await client.PostAsync<OverpassApiResponse>(request, token);
+            });
         });
-        
         Console.WriteLine("Request completed.");
         Console.WriteLine(response);
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(response, options);
         Console.WriteLine(json);
-        var amenities = response.Elements
-            .Select(x => x.Tags)
-            .Where(x => x.ContainsKey("amenity"))
-            .SelectMany(x => x.Values.ToList())
-            .Distinct();
-        return amenities;
+        Console.WriteLine(string.Join(", ", response.Elements.First().Tags.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
+        return Convert.ToInt32(response.Elements.First().Tags["total"]);
     }
 
-    // public async Task<IDictionary<string, int>> GetAmenityValueCounts(double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
-    // {
-    //     Console.WriteLine("Making request to Overpass API...");
-    //     var client = new RestClient();
-    //     var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
-    //     request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-    //     request.AddParameter("data", ToOverpassQL(minLon, minLat, maxLon, maxLat));
-    //     Console.WriteLine("Making request...");
-        
-    //     var response = await client.PostAsync<OverpassApiResponse>(request, token);
-    //     Console.WriteLine("Request completed.");
-    //     Console.WriteLine(response);
-    //     var options = new JsonSerializerOptions { WriteIndented = true };
-    //     string json = JsonSerializer.Serialize(response, options);
-    //     Console.WriteLine(json);
-    //     var amenityCounts = response.Elements
-    //         .Select(x => x.Tags)
-    //         .Where(x => x.ContainsKey("amenity"))
-    //         .SelectMany(x => x.Values)
-    //         .GroupBy(x => x)
-    //         .ToDictionary(g => g.Key, g => g.Count());
-    //     return amenityCounts;
-    // }
-
-    private string ToOverpassQL(double minLon, double minLat, double maxLon, double maxLat) 
+    private static string GetTagsForCategory(POI.Category category) => category switch
     {
-        Console.WriteLine("Building OverpassQL statement...");
-        var input = $"[out:json];node[amenity=drinking_water]({minLat},{minLon},{maxLat},{maxLon});out;";
-        // var encoded = HttpUtility.UrlEncode(input);
-        // Console.WriteLine("Encoding completed.");
-        // Console.WriteLine(encoded);
-        return input;
-    }
+        POI.Category.Park => "[leisure=park]",
+        POI.Category.Library => "[amenity=library]",
+        POI.Category.School => "[amenity=school]",
+        POI.Category.Grocery => "[shop=supermarket]",
+        POI.Category.CoffeeShop => "[amenity=cafe][cuisine=coffee_shop]",
+        POI.Category.Airport => "[aeroway=terminal]",
+        POI.Category.TrainStation => "[building=train_station]",
+        POI.Category.BusStation => "[amenity=bus_station]",
+        POI.Category.PoliceStation => "[amenity=police]",
+        POI.Category.FireStation => "[amenity=fire_station]",
+        _ => "TODO"
+    };
 }

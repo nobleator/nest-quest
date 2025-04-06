@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelloWorldApi.Migrations
 {
-    [DbContext(typeof(CacheDbContext))]
-    partial class CacheDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AppDbContext))]
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,29 @@ namespace HelloWorldApi.Migrations
                     b.HasKey("Parameters");
 
                     b.ToTable("CacheEntries");
+                });
+
+            modelBuilder.Entity("Criterion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Direction")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Tolerance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Criteria");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,11 +8,11 @@ services:
       - app-data:/app/data
     environment:
       - ASPNETCORE_URLS=http://+:5001
-      - ConnectionStrings__DefaultConnection=Data Source=/app/data/cache.db
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/app.db
 
-  web-ui:
+  web-client:
     build:
-      context: ./web-ui
+      context: ./web-client
     ports:
       - "8080:80"
 
@@ -25,9 +25,9 @@ services:
       - "443:443/udp"
     volumes:
       - ./web-server/:/etc/caddy/
-      - ./web-ui/:/usr/share/caddy/
+      - ./web-client/:/usr/share/caddy/
     depends_on:
-      - web-ui
+      - web-client
       - web-api
 
 volumes:

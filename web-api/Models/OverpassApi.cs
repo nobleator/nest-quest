@@ -26,6 +26,8 @@ namespace OverpassApiModel
     {
         public string Type { get; set; }
         public long Id { get; set; }
+        public decimal Lat { get; set; }
+        public decimal Lon { get; set; }
         public Dictionary<string, string> Tags { get; set; }
 
         public Element()

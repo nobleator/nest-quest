@@ -1,8 +1,10 @@
+namespace PointOfInterest;
+
 public class PointOfInterest
 {
     public double Latitude { get; }
     public double Longitude { get; }
-    public POIType Type { get; }
+    public Category Category { get; }
 
     public PointOfInterest(double lat, double lon)
     {
@@ -11,10 +13,20 @@ public class PointOfInterest
     }
 }
 
-public enum POIType
+public record Home(string DisplayName, double Lat, double Lon);
+
+public enum Category
 {
     Unknown,
     Library,
     School,
     Park,
+    BikeTrail,
+    Grocery,
+    CoffeeShop,
+    Airport,
+    TrainStation,
+    BusStation,
+    PoliceStation,
+    FireStation,
 }
