@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HelloWorldApi.Migrations
+namespace NestQuestApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250324002626_UpdateSchemaIntToDecimal")]

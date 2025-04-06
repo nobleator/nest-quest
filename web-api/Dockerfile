@@ -8,13 +8,13 @@
 
 # # Build the app
 # COPY . ./
-# RUN dotnet publish HelloWorldApi.csproj -c Release -o out
+# RUN dotnet publish NestQuestApi.csproj -c Release -o out
 
 # # Use runtime image for deployment
 # FROM mcr.microsoft.com/dotnet/aspnet:8.0
 # WORKDIR /app
 # COPY --from=build /app/out .
-# ENTRYPOINT ["dotnet", "HelloWorldApi.dll"]
+# ENTRYPOINT ["dotnet", "NestQuestApi.dll"]
 
 
 # Use .NET SDK for building the app
@@ -27,7 +27,7 @@ RUN dotnet restore
 
 # Build the app
 COPY . ./
-RUN dotnet publish HelloWorldApi.csproj -c Release -o out
+RUN dotnet publish NestQuestApi.csproj -c Release -o out
 
 # Use runtime image for deployment
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
@@ -41,4 +41,4 @@ VOLUME ["/app/data"]
 ENV ConnectionStrings__DefaultConnection="Data Source=/app/data/cache.db"
 
 # Apply EF Core migrations and start the app
-ENTRYPOINT ["sh", "-c", "dotnet HelloWorldApi.dll; dotnet ef database update --no-build"]
+ENTRYPOINT ["sh", "-c", "dotnet NestQuestApi.dll; dotnet ef database update --no-build"]

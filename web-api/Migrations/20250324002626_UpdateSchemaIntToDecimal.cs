@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace HelloWorldApi.Migrations
+namespace NestQuestApi.Migrations
 {
     /// <inheritdoc />
     public partial class UpdateSchemaIntToDecimal : Migration

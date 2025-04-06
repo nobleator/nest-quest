@@ -2,7 +2,18 @@
 
 This project intends to help identify if a potential home meets your requirements. Users configure their preferences in a tree structure. These preferences include conditional statements as well as arithmetic operators and distance values. This tree can then be used to evaluate a target location using various providers such as Open Street Map.
 
+## Getting Started
+To run this project locally, start by cloning this repo. There are multiple microservices, but all of them are included in this monorepo for now. Assuming you have Docker and Docker Compose installed, you can start the stack with:
+> docker compose up
+
+I prefer to also include the `detach` and `build` flags to ensure the latest code is being rebuilt each time:
+> docker compose up -d --build
+
+Once this is running, you should be able to navigate to `http://localhost/` in your browswer and see the web client running.
+
 ## Architecture
+
+TODO
 
 The architecture for this project can be decomposed into several subsystems and/or components:
 - Client for user preference input. This could take several forms, such as a website, CLI, or browser extension. Regardless of the implementation each client would adhere to the same general structure and interface with the same APIs.
