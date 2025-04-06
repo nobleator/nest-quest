@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page with OpenStreetMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .left {
+            flex: 1;
+            padding: 20px;
+            background-color: #f0f0f0;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+        .right {
+            flex: 2;
+            padding: 20px;
+            background-color: #e0e0e0;
+            display: flex; /* Make right section a flex container */
+        }
+        #map {
+            width: 100%;
+            height: 100%; /* Set height to fill the container */
+        }
+        .dropdown-container {
+            display: flex; /* Align items in a row */
+            align-items: center; /* Center items vertically */
+            margin: 10px 0; /* Space between dropdowns */
+        }
+        select {
+            flex: 1; /* Allow select to take available space */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input {
+            width: 80px;
+            padding: 10px;
+            margin-left: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h2>User Input</h2>
+            <div id="dropdownContainer">
+                <div class="dropdown-container">
+                    <select class="dropdown">
+                        <option value="">Select a place type...</option>
+                        <option value="Grocery">Grocery</option>
+                        <option value="Airport">Airport</option>
+                        <option value="Library">Library</option>
+                        <option value="Park">Park</option>
+                        <option value="School">School</option>
+                    </select>
+                    <input type="number" class="threshold" placeholder="Distance (m)" />
+                    <button onclick="removeDropdown(this)">Remove</button>
+                </div>
+            </div>
+            <button onclick="addDropdown()">Add</button>
+            <button onclick="handleInput()">Submit</button>
+            <div id="output"></div>
+        </div>
+        <div class="right">
+            <h2>Map</h2>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        let homes = [];
+        let attractions = [];
+
+        // Define attraction icons
+        const attractionIcons = {
+            'Grocery': '🛒',
+            'Airport': '✈️',
+            'Library': '📚',
+            'Park': '🏞️',
+            'School': '🏫'
+        };
+
+        // Initialize the map
+        function initMap() {
+            const map = L.map('map').setView([51.505, -0.09], 13); // Set initial coordinates and zoom
+
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Define locations for the homes (added more homes near each attraction)
+            const homeLocations = [
+                [51.505, -0.09], // Near first attraction
+                [51.5065, -0.095], // Near Grocery
+                [51.51, -0.1], // Near Airport
+                [51.49, -0.08], // Near Library
+                [51.511, -0.09], // Near Library
+                [51.5075, -0.07], // Near Park
+                [51.52, -0.1], // Near Park
+                [51.52, -0.12], // Near School
+                [51.49, -0.06], // Near Grocery
+                [51.52, -0.095], // Near Grocery
+                [51.48, -0.1], // Random
+                [51.513, -0.11], // Near Park
+                [51.515, -0.08], // Random
+                [51.507, -0.08], // Random
+                [51.49, -0.11] // Random
+            ];
+
+            // Add the homes to the map
+            homeLocations.forEach((location, index) => {
+                const marker = L.marker(location).addTo(map);
+                homes.push(marker);
+                marker.bindPopup(`Home ${index + 1}`);
+            });
+
+            // Define locations and types for the attractions
+            const attractionLocations = [
+                { location: [51.506, -0.095], type: 'Grocery' },
+                { location: [51.51, -0.08], type: 'Airport' },
+                { location: [51.52, -0.09], type: 'Library' },
+                { location: [51.507, -0.07], type: 'Park' },
+                { location: [51.52, -0.12], type: 'School' },
+                { location: [51.49, -0.06], type: 'Grocery' },
+                { location: [51.511, -0.1], type: 'Library' },
+                { location: [51.513, -0.11], type: 'Park' }
+            ];
+
+            // Add the attractions to the map with distinct icons
+            attractionLocations.forEach(item => {
+                const icon = L.divIcon({
+                    className: 'custom-icon',
+                    html: `<span style="font-size: 24px;">${attractionIcons[item.type]}</span>`,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 30]
+                });
+
+                const marker = L.marker(item.location, { icon: icon }).addTo(map);
+                attractions.push({ marker: marker, type: item.type });
+                marker.bindPopup(`${item.type} Attraction`);
+            });
+        }
+
+        function addDropdown() {
+            const dropdownContainer = document.getElementById('dropdownContainer');
+            const newDropdown = document.createElement('div');
+            newDropdown.classList.add('dropdown-container');
+            newDropdown.innerHTML = `
+                <select class="dropdown">
+                    <option value="">Select a place type...</option>
+                    <option value="Grocery">Grocery</option>
+                    <option value="Airport">Airport</option>
+                    <option value="Library">Library</option>
+                    <option value="Park">Park</option>
+                    <option value="School">School</option>
+                </select>
+                <input type="number" class="threshold" placeholder="Distance (m)" />
+                <button onclick="removeDropdown(this)">Remove</button>
+            `;
+            dropdownContainer.appendChild(newDropdown);
+        }
+
+        function removeDropdown(button) {
+            const dropdownDiv = button.parentElement;
+            dropdownDiv.remove(); // Remove the dropdown and button from the page
+        }
+
+        function handleInput() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            const thresholds = document.querySelectorAll('.threshold');
+            let selectedOptions = Array.from(dropdowns).map((dropdown, index) => ({
+                type: dropdown.value,
+                threshold: thresholds[index].value
+            })).filter(option => option.type && option.threshold);
+
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `Selected place types and thresholds: ${JSON.stringify(selectedOptions)}`;
+
+            // Reset all homes to be transparent
+            homes.forEach(marker => {
+                marker.setOpacity(0.3); // Set all homes to be semi-transparent
+            });
+
+            // Calculate distance and keep solid homes that are close to selected attractions
+            selectedOptions.forEach(option => {
+                homes.forEach(home => {
+                    const homeLatLng = home.getLatLng();
+                    attractions.forEach(attraction => {
+                        if (attraction.type === option.type) {
+                            const attractionLatLng = attraction.marker.getLatLng();
+                            const distance = homeLatLng.distanceTo(attractionLatLng); // Calculate distance in meters
+                            if (distance <= option.threshold) { // Use corresponding threshold
+                                home.setOpacity(1); // Set matching homes to be solid
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        // Call the initMap function to render the map
+        initMap();
+    </script>
+</body>
+</html>

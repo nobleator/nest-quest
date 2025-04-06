@@ -1,0 +1,6 @@
+# Redirect requests to the frontend
+http://localhost {
+  reverse_proxy /api/* web-api:5001
+  root * /usr/share/caddy
+  file_server
+}

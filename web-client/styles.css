@@ -1,0 +1,97 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+}
+.container {
+    display: flex;
+    flex: 1;
+}
+.left {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+.right {
+    flex: 2;
+    padding: 20px;
+    background-color: #e0e0e0;
+    display: flex; /* Make right section a flex container */
+}
+#map {
+    width: 100%;
+    height: 100%; /* Set height to fill the container */
+}
+.dropdown-container {
+    display: flex; /* Align items in a row */
+    align-items: center; /* Center items vertically */
+    margin: 10px 0; /* Space between dropdowns */
+}
+select {
+    flex: 1; /* Allow select to take available space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+input { 
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.threshold {
+    width: 80px;
+}
+button {
+    padding: 10px;
+    margin-left: 10px;
+}
+#search-container {
+    display: flex;
+    width: 100%;
+    margin: 20px auto;
+}
+#addressInput {
+    flex: 1;
+}
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.guide-content.hidden {
+    display: none;
+}
+.guide-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #555;
+    transition: color 0.2s ease;
+}
+.guide-toggle:hover {
+    color: #000;
+}
