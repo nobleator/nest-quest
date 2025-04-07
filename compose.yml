@@ -29,6 +29,8 @@ services:
     depends_on:
       - web-client
       - web-api
+    environment:
+      - CADDY_TLS_INTERNAL=1
 
 volumes:
   app-data:
