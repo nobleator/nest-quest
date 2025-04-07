@@ -170,10 +170,6 @@ async function initMap() {
     heatmapLayer = new HeatmapOverlay(heatmapConfig);
     heatmapLayer.addTo(map);
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //     maxZoom: 19,
-    //     attribution: '© OpenStreetMap contributors'
-    // }).addTo(map);
     L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
         minZoom: 0,
         maxZoom: 19,
