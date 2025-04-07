@@ -91,7 +91,8 @@ async function refreshHomeScores() {
         home.score = score;
         return home;
     }));
-    heatmapLayer.setData({ max: Math.max(...results.map(h => h.score)), data: results });
+    
+    heatmapLayer.setData({ max: Math.max(...results.map(h => h.score)), data: results.filter(h => h.score > 0) });
 
     results.sort((a, b) => a.displayName.localeCompare(b.displayName));
     results.forEach(home => {
