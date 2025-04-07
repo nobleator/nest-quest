@@ -10,6 +10,9 @@ builder.Services.AddTransient<OverpassService>();
 builder.Services.AddTransient<EvaluationService>();
 builder.Services.AddSingleton(new RateLimiter(1, TimeSpan.FromSeconds(1)));
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -18,7 +21,8 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-// TODO: add Swagger with pre-populated example query strings
+app.UseSwagger();
+app.UseSwaggerUI(); 
 
 app.MapGet("/api/v0/homes", (double minLon, double minLat, double maxLon, double maxLat) => {
     var homes = new List<POI.Home>
