@@ -16,7 +16,7 @@ const poiIcons = {
 const heatmapConfig = {
     // radius should be small ONLY if scaleRadius is true (or small radius is intended)
     // if scaleRadius is false it will be the constant radius used in pixels
-    "radius": 25,
+    "radius": 60,
     "maxOpacity": .8,
     // scales the radius based on map zoom
     "scaleRadius": false,
@@ -30,8 +30,8 @@ const heatmapConfig = {
     lngField: 'lon',
     // which field name in your data represents the data value - default "value"
     valueField: 'score',
-    blur: 15,
-    max: 1,
+    // blur: 15,
+    // max: 1,
 };
 
 let homes = [];
@@ -91,7 +91,7 @@ async function refreshHomeScores() {
         home.score = score;
         return home;
     }));
-    // heatmapLayer.setData({ max: 1, data: results });
+    heatmapLayer.setData({ max: Math.max(...results.map(h => h.score)), data: results });
 
     results.sort((a, b) => a.displayName.localeCompare(b.displayName));
     results.forEach(home => {
@@ -109,12 +109,6 @@ async function refreshHomeScores() {
             unmatchedHomeList.appendChild(li);
         }
     });
-
-    // var testData = {
-    //     max: 3,
-    //     data: [{lat: 51.505278, lng: -0.09, count: 3},{lat: 51.504578, lng: -0.09, count: 1}]
-    // };
-    // heatmapLayer.setData(testData);
 }
 
 async function updatePinPopup(marker) {
@@ -183,7 +177,7 @@ async function initMap() {
     L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
         minZoom: 0,
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         ext: 'png'
     }).addTo(map);
 
@@ -324,4 +318,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         content.classList.toggle('hidden');
     });
     await initMap();
+    updateSubmitButtonState(false);
 });
