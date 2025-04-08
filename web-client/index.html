@@ -35,7 +35,7 @@
       </div>
       <h2>Homes</h2>
       <div>
-        <h3>Matches</h3>
+        <h3>Matched</h3>
         <ul id="matchedHomes"></ul>
         <h3>Not matched</h3>
         <ul id="unmatchedHomes"></ul>
@@ -43,7 +43,7 @@
       <h2>Criteria</h2>
       <div>
         <div id="dropdownContainer"></div>
-        <button onclick="addDropdown()">Add</button>
+        <button id="addButton">Add</button>
         <button id="submitButton">Submit</button>
       </div>
     </div>
@@ -55,6 +55,6 @@
   <script src="/lib/leaflet/leaflet.js"></script>
   <script src="/lib/heatmap.js-2.0.5/build/heatmap.min.js"></script>
   <script src="/lib/heatmap.js-2.0.5/plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="/app/index.js"></script>
 </body>
 </html>

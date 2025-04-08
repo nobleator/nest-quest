@@ -1,4 +1,9 @@
-# Redirect requests to the frontend
+localhost {
+  reverse_proxy /api/* web-api:5001
+  reverse_proxy /swagger/* web-api:5001
+  root * /usr/share/caddy
+  file_server
+}
 https://localhost {
   reverse_proxy /api/* web-api:5001
   reverse_proxy /swagger/* web-api:5001
