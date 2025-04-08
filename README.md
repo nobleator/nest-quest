@@ -68,7 +68,7 @@ Infrastructure:
 - [ ] Database versioning: EF code-first or explicit scripts?
 - [ ] Logging (writing to Docker via console for now)
 - [ ] Unit test framework(s)
-- [ ] Swagger page for web API with version tag embedded
+- [ ] Swagger page for web API with version tag dropdown properly configured
 - [ ] Add version tag to web client
 - [ ] Add version tag to web API headers
 - [ ] Add healthcheck endpoint to web API, including version tag
@@ -114,6 +114,7 @@ v1.0.0: snap versions of all APIs, docker images, installers, etc.
 - [ ] Update Caddyfile with production URL
 
 Backlog:
+- [ ] Migrate from Docker to podman
 - [ ] Sensitivity analysis to determine constraining criteria
 - [ ] Weights for each criterion
 - [ ] Continuous scores for criteria
