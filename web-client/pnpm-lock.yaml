@@ -1,0 +1,46 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      heatmapjs:
+        specifier: ^2.0.2
+        version: 2.0.2
+      leaflet:
+        specifier: ^1.9.4
+        version: 1.9.4
+      leaflet-heatmap:
+        specifier: ^1.0.0
+        version: 1.0.0
+
+packages:
+
+  heatmap.js@2.0.5:
+    resolution: {integrity: sha512-CG2gYFP5Cv9IQCXEg3ZRxnJDyAilhWnQlAuHYGuWVzv6mFtQelS1bR9iN80IyDmFECbFPbg6I0LR5uAFHgCthw==}
+
+  heatmapjs@2.0.2:
+    resolution: {integrity: sha512-1pO/bbn9G1NYhndvjnzLVAQMGBOCk8abMM7QnLOPlIMoxDfG9Uylb68PlZe/0MCT9GuwGGtchXVPLWfoT6HrCw==}
+
+  leaflet-heatmap@1.0.0:
+    resolution: {integrity: sha512-WP/emZYwjWaEnWMcE2dftuJvtjp53zmJcHtVTHUqPN7AQEowHxDTLH5j1BJjE4uL1K5dJclBLX4oLpnOGS/qTw==}
+
+  leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
+
+snapshots:
+
+  heatmap.js@2.0.5: {}
+
+  heatmapjs@2.0.2: {}
+
+  leaflet-heatmap@1.0.0:
+    dependencies:
+      heatmap.js: 2.0.5
+      leaflet: 1.9.4
+
+  leaflet@1.9.4: {}

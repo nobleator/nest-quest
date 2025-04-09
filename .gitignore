@@ -28,4 +28,5 @@ web-api/.vscode/*
 !web-api/.vscode/launch.json
 !web-api/.vscode/extensions.json
 !web-api/.vscode/*.code-snippets
-web-client/lib/*
+web-client/node_modules/
+web-client/node_modules/*

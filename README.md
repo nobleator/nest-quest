@@ -11,6 +11,9 @@ I prefer to also include the `detach` and `build` flags to ensure the latest cod
 
 Once this is running, you should be able to navigate to `http://localhost/` in your browswer and see the web client running.
 
+### Installing Packages
+While the Dockerfiles handle running the existing application, if you want to install any additional packages you will need the [.NET SDK](https://dotnet.microsoft.com/en-us/download) (preferably v9+) and [pnpm](https://pnpm.io/installation) (preferably v10.8+) installed locally.
+
 ## Architecture
 
 TODO
