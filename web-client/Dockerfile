@@ -1,6 +1,6 @@
 FROM alpine:latest AS build
 WORKDIR /app
-COPY pnpm-lock.yaml package.json ./
+COPY . .
 
 ENV PNPM_HOME=/root/.local/share/pnpm
 ENV PATH=$PNPM_HOME:$PATH

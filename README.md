@@ -57,12 +57,12 @@ There are several external APIs used during operation of this extension.
 v0.0.1: static webpage with fictional houses & attractions using basic drop-downs and simple OR logic for all filters.
 - [x] Basic HTML page with fake data
 
-v0.0.2: OSM API integration to populate real building/location/attraction data. Add docker compose with VanillaJS UI, API, sqlite database, and evaluation engine services.
+v0.0.2: OSM API integration to populate real building/location/attraction data. Add docker compose with vanilla JS UI, API, sqlite database, and evaluation engine services.
 Infrastructure:
 - [x] Docker compose services: web client, web API, database, web server
 - [ ] Language and framework selections for all services
 - [x] Web API Dockerfile
-- [ ] Web client Dockerfile
+- [x] Web client Dockerfile
 - [ ] Database Dockerfile?
 - [x] Web server Caddyfile for localhost
 - [x] Caching for Overpass requests

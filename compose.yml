@@ -25,12 +25,13 @@ services:
       - "443:443/udp"
     volumes:
       - ./web-server/:/etc/caddy/
-      - ./web-client/:/usr/share/caddy/
     depends_on:
       - web-client
       - web-api
     environment:
       - CADDY_TLS_INTERNAL=1
+    build:
+      context: ./web-client
 
 volumes:
   app-data:
