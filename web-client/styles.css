@@ -16,13 +16,25 @@ body {
 }
 .right {
     flex: 2;
+    flex-direction: column;
     padding: 20px;
     background-color: #e0e0e0;
-    display: flex; /* Make right section a flex container */
 }
 #map {
     width: 100%;
-    height: 100%; /* Set height to fill the container */
+    height: 100%;
+}
+#mapContainer {
+    width: 100%;
+    height: 100%;
+}
+#venn {
+    width: 100%;
+    height: 100%;
+}
+#vennContainer {
+    width: 100%;
+    height: 100%;
 }
 .dropdown-container {
     display: flex; /* Align items in a row */
@@ -95,3 +107,59 @@ button {
 .guide-toggle:hover {
     color: #000;
 }
+
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; /* Prevent stretching */
+    margin-bottom: 1rem;
+    gap: 0.5rem; /* Space between buttons */
+}
+.tab-button {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+}
+.tab-button.active {
+    background: #007BFF;
+    color: #fff;
+}
+.tab-content {
+    flex: 1; /* Allow content to grow and fill available space */
+    display: none; /* Default state: hidden */
+}
+.tab-content.active {
+    display: block; /* Show active content */
+}
+
+/* venn diagram styling */
+/* .set-circle { fill-opacity: 0.4; }
+.node { fill: steelblue; stroke: #333; stroke-width: 0.5; } */
+
+/* #venn {
+    width: 100%;
+    height: 100%; 
+    display: block;
+} */
+/* .node rect {
+    cursor: pointer;
+    fill: #fff;
+    fill-opacity: .5;
+    stroke: #3182bd;
+    stroke-width: 1.5px;
+}
+.node circle {
+    opacity: .5;    
+}
+.node text {
+    font: 10px sans-serif;
+    pointer-events: none;
+}
+path.link {
+    fill: none;
+    stroke: #9ecae1;
+    stroke-width: 1.5px;
+} */

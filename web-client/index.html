@@ -48,13 +48,29 @@
       </div>
     </div>
     <div class="right">
+      <div class="tabs">
+        <button id="mapTabButton" class="tab-button active">Map</button>
+        <button id="vennTabButton" class="tab-button">Venn</button>
+      </div>
+      <div id="mapContainer" class="tab-content active">
         <div id="map"></div>
-    </div>
+      </div>
+      <div id="vennContainer" class="tab-content">
+        <p>Under construction</p>
+        <div id="vennDiv"></div>
+        <svg id="venn"></svg>
+        </svg>
+      </div>
+    </div>    
   </div>
 
   <script src="/node_modules/leaflet/dist/leaflet.js"></script>
   <script src="/node_modules/heatmapjs/heatmap.min.js"></script>
   <script src="/node_modules/leaflet-heatmap/leaflet-heatmap.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- <script src="/node_modules/d3/dist/d3.min.js"></script>
+  <script src="/node_modules/d3-hierarchy/dist/d3-hierarchy.min.js"></script> -->
+  <script src="/node_modules/@upsetjs/venn.js/build/venn.min.js"></script>
   <script type="module" src="/app/index.js"></script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 {
 	"dependencies": {
+		"@upsetjs/venn.js": "^1.4.2",
+		"d3": "^7.9.0",
+		"d3-hierarchy": "^3.1.2",
 		"heatmapjs": "^2.0.2",
 		"leaflet": "^1.9.4",
 		"leaflet-heatmap": "^1.0.0"
