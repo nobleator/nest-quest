@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"chart.js": "^4.4.9",
 		"heatmapjs": "^2.0.2",
 		"leaflet": "^1.9.4",
 		"leaflet-heatmap": "^1.0.0"

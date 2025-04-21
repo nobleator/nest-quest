@@ -12,25 +12,55 @@ body {
     flex: 1;
     padding: 20px;
     background-color: #f0f0f0;
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    overflow-y: auto;
 }
 .right {
     flex: 2;
+    display: flex;
+    flex-direction: column;
     padding: 20px;
     background-color: #e0e0e0;
-    display: flex; /* Make right section a flex container */
+    height: 100%;
+    box-sizing: border-box;
 }
-#map {
+#map, #mapContainer, #analytics, #analyticsContainer {
     width: 100%;
-    height: 100%; /* Set height to fill the container */
+    height: 100%;
+}
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.tab-button {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+}
+.tab-button.active {
+    background: #007BFF;
+    color: #fff;
+}
+.tab-content {
+    flex-grow: 1;
+    overflow: auto;
+    display: none;
+}
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
 }
 .dropdown-container {
-    display: flex; /* Align items in a row */
-    align-items: center; /* Center items vertically */
-    margin: 10px 0; /* Space between dropdowns */
+    display: flex;
+    align-items: center; 
+    margin: 10px 0;
 }
 select {
-    flex: 1; /* Allow select to take available space */
+    flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;

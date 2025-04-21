@@ -48,13 +48,25 @@
       </div>
     </div>
     <div class="right">
+      <div class="tabs">
+        <button id="mapTabButton" class="tab-button active">Map</button>
+        <button id="analyticsTabButton" class="tab-button">Analytics</button>
+      </div>
+      <div id="mapContainer" class="tab-content active">
         <div id="map"></div>
-    </div>
+      </div>
+      <div id="analyticsContainer" class="tab-content">
+        <div id="analyticsDiv"></div>
+         <canvas id="radar"></canvas>
+        </svg>
+      </div>
+    </div>    
   </div>
 
   <script src="/node_modules/leaflet/dist/leaflet.js"></script>
   <script src="/node_modules/heatmapjs/heatmap.min.js"></script>
   <script src="/node_modules/leaflet-heatmap/leaflet-heatmap.js"></script>
+  <script src="/node_modules/chart.js/dist/chart.umd.js"></script>
   <script type="module" src="/app/index.js"></script>
 </body>
 </html>

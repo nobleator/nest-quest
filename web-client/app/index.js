@@ -1,6 +1,6 @@
 import { MapState } from './map.js';
 import { handleSubmit, saveCriteria } from './data.js';
-import { addDropdown, initDropdowns, updateSubmitButtonState, showLoading, hideLoading } from './ui.js';
+import { addDropdown, initDropdowns, updateSubmitButtonState, showLoading, hideLoading, switchTab } from './ui.js';
 
 const mapState = new MapState();
 
@@ -18,5 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const content = document.getElementById('guide-content');
         content.classList.toggle('hidden');
     });
+    document.getElementById('mapTabButton').addEventListener('click', () => switchTab('map'));
+    document.getElementById('analyticsTabButton').addEventListener('click', () => switchTab('analytics'));
     mapState.initMap();
 });

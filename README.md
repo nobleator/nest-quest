@@ -88,7 +88,7 @@ Business logic:
 - [x] `GET /api/v0/homes` endpoint to fetch home data by bounding box (returning dummy data for this version)
 - [x] Simpler base map (than basic OSM tile server) for better contrast with POI and home pins
 - [x] Split matching homes into a separate list from unmatched homes
-- [x] Add unit anotation
+- [x] Add distance unit annotation
 - [x] Scale units to kilometers
 
 v0.0.3: add real property data? Add browser extension to allow overlay of Zillow?
@@ -119,6 +119,7 @@ v1.0.0: snap versions of all APIs, docker images, installers, etc.
 Backlog:
 - [ ] Migrate from Docker to podman
 - [ ] Sensitivity analysis to determine constraining criteria
+- [ ] Add data with radar charts showing each listing on top of all the criteria. Dynamically generate the radar chart structure based on selected criteria
 - [ ] Weights for each criterion
 - [ ] Continuous scores for criteria
 - [ ] Travel mode
