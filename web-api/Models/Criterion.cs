@@ -1,4 +1,7 @@
 using PointOfInterest;
+using Utilities;
+
+namespace Criteria;
 
 public class CriteriaModel
 {
@@ -9,6 +12,7 @@ public class Criterion
 {
     public int Id { get; set; }
     public Category Category { get; set; }
+    public string CategoryName => Category.GetDescription();
     public decimal Tolerance { get; set; }
     public Unit Unit { get; set; }
     public Direction Direction { get; set; }

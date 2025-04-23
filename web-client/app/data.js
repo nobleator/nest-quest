@@ -25,7 +25,7 @@ async function refreshPoiData(category, mapState) {
     }));
 }
 
-async function refreshHomeScores(mapState) {
+async function refreshHomeScores(mapState, radarChartState) {
     let bounds = mapState.map.getBounds();
     const params = {
         minLat: bounds.getSouth(),
@@ -42,14 +42,28 @@ async function refreshHomeScores(mapState) {
     const unmatchedHomeList = document.getElementById('unmatchedHomes');
     unmatchedHomeList.innerHTML = '';
     mapState.homeMarkerLayer.clearLayers();
+    let scoreDetails = [];
     const results = await Promise.all(homesData.map(async (home) => {
         const score = await fetch(`/api/v0/score?${new URLSearchParams({
             lat: home.lat,
             lon: home.lon
         }).toString()}`).then(res => res.json());
         home.score = score;
+
+        const detail = await fetch(`/api/v0/score-detail?${new URLSearchParams({
+            lat: home.lat,
+            lon: home.lon
+        }).toString()}`).then(res => res.json());
+        const array = Object.keys(radarChartState.labelDict).map(id => detail[id]);
+        scoreDetails.push({
+            label: home.displayName,
+            data: array,
+            // fill: true
+        });
         return home;
     }));
+
+    await radarChartState.update(scoreDetails);
     
     mapState.heatmapLayer.setData({ max: Math.max(...results.map(h => h.score)), data: results.filter(h => h.score > 0) });
 
@@ -119,9 +133,9 @@ export async function saveCriteria() {
     }
 };
 
-export async function handleSubmit(mapState) {
+export async function handleSubmit(mapState, radarChartState) {
     mapState.poiMarkerLayer.clearLayers();
     const dropdowns = Array.from(document.querySelectorAll('.dropdown'));
     await Promise.all(dropdowns.map(dropdown => refreshPoiData(dropdown.value, mapState)));
-    await refreshHomeScores(mapState);
+    await refreshHomeScores(mapState, radarChartState);
 }

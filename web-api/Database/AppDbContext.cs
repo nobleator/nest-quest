@@ -1,3 +1,4 @@
+using Criteria;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext

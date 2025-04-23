@@ -71,7 +71,7 @@ Infrastructure:
 - [ ] Database versioning: EF code-first or explicit scripts?
 - [ ] Logging (writing to Docker via console for now)
 - [ ] Unit test framework(s)
-- [ ] Swagger page for web API with version tag dropdown properly configured
+- [ ] Swagger page for web API with version tag dropdown properly configured and sample parameter values
 - [ ] Add version tag to web client
 - [ ] Add version tag to web API headers
 - [ ] Add healthcheck endpoint to web API, including version tag
@@ -92,6 +92,7 @@ Business logic:
 - [x] Scale units to kilometers
 
 v0.0.3: add real property data? Add browser extension to allow overlay of Zillow?
+- [ ] Listing interface and services to fetch real property listing data from a variety of sources
 - [ ] CI/CD
 - [ ] Add expiry time for database cache entries
 

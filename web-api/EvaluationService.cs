@@ -1,3 +1,5 @@
+using Criteria;
+
 namespace NestQuest.Services;
 
 public class EvaluationService
@@ -24,5 +26,19 @@ public class EvaluationService
     {
         // TODO: add weights, add count vs min/max logic, normalize results to a 0-1 range
         return await Task.FromResult(1.0);
+    }
+
+    public async Task<Dictionary<int, int>> BinaryScoreDetail(double lat, double lon, IEnumerable<Criterion> criteria, CancellationToken token)
+    {
+        Console.WriteLine($"BinaryScore evaluation...");
+        var tasks = criteria.ToDictionary(
+            c => c.Id,
+            c => _overpassService.GetCountOfMatches(c, lat, lon, token)
+        );
+        var results = await Task.WhenAll(tasks.Values);
+        var resultDictionary = criteria.Zip(results, (c, result) => new { c, result })
+                               .ToDictionary(x => x.c.Id, x => x.result);
+        Console.WriteLine($"BinaryScore evaluation completed, results: {string.Join(Environment.NewLine, resultDictionary.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
+        return resultDictionary;
     }
 }

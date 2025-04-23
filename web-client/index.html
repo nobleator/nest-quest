@@ -57,6 +57,66 @@
       </div>
       <div id="analyticsContainer" class="tab-content">
         <div id="analyticsDiv"></div>
+          <div>
+            Given the following vector for weights:
+            \[
+            w=\begin{bmatrix}
+               a & b
+            \end{bmatrix}
+            \]
+            And the following matrix for locations and criteria values, with column representing a home and each row representing a criteria:
+            \[
+            C=\begin{bmatrix}
+               c & d & e \\
+               f & g & h
+            \end{bmatrix}
+            \]
+            Then we have the following utility function formula:
+            \[
+            u=
+            \begin{bmatrix}
+              a & b
+            \end{bmatrix}
+            \begin{bmatrix}
+              c & d & e \\
+              f & g & h
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+              a * c + b * f & a * d + b * g & a * e + b * h
+            \end{bmatrix}
+            \]
+            For example, with the following inputs:
+            \[
+            w=\begin{bmatrix}
+              0.4 & 0.6
+            \end{bmatrix}, 
+            C=\begin{bmatrix}
+               0.5 & 1 & 2 \\
+               1.75 & 1.1 & 0.9
+            \end{bmatrix}
+            \]
+            We can calculate the utility as follows:
+            \[
+            u=
+            \begin{bmatrix}
+              0.4 & 0.6
+            \end{bmatrix}
+            \begin{bmatrix}
+              0.5 & 1 & 2 \\
+              1.75 & 1.1 & 0.9
+            \end{bmatrix}\newline
+            =
+            \begin{bmatrix}
+              0.4 * 0.5 + 0.6 * 1.75 & 0.4 * 1 + 0.6 * 1.1 & 0.4 * 2 + 0.6 * 0.9
+            \end{bmatrix}\newline
+            =
+            \begin{bmatrix}
+              1.25 & 1.06 & 1.34
+            \end{bmatrix}
+            \]
+            This means that the last option, with values of 2 & 0.9, has the highest utility with a score of 1.34.
+          </div>
          <canvas id="radar"></canvas>
         </svg>
       </div>
@@ -68,5 +128,18 @@
   <script src="/node_modules/leaflet-heatmap/leaflet-heatmap.js"></script>
   <script src="/node_modules/chart.js/dist/chart.umd.js"></script>
   <script type="module" src="/app/index.js"></script>
+  <!-- https://katex.org/docs/browser.html -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous">
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+    crossorigin="anonymous"></script>
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
 </body>
 </html>

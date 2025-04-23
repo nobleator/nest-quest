@@ -2,6 +2,7 @@ using RestSharp;
 using System.Text.Json;
 using OverpassApiModel;
 using POI = PointOfInterest;
+using Criteria;
 
 namespace NestQuest.Services;
 

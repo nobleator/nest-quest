@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace PointOfInterest;
 
 public class PointOfInterest
@@ -17,6 +19,7 @@ public record Home(string DisplayName, double Lat, double Lon);
 
 public enum Category
 {
+    [Description("Unknown")]
     Unknown,
     Library,
     School,

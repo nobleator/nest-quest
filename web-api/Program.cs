@@ -1,3 +1,4 @@
+using Criteria;
 using Microsoft.EntityFrameworkCore;
 using NestQuest.Services;
 using OverpassApiModel;
@@ -109,6 +110,15 @@ app.MapGet("/api/v0/score", async (CancellationToken token, AppDbContext dbConte
     Console.WriteLine("Loading saved criteria...");
     Console.WriteLine(string.Join(", ", criteria));
     var score = await evaluationService.BinaryScore(lat, lon, criteria, token);
+    return Results.Ok(score);
+});
+
+app.MapGet("/api/v0/score-detail", async (CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
+{
+    var criteria = await dbContext.Criteria.ToListAsync();
+    Console.WriteLine("Loading saved criteria...");
+    Console.WriteLine(string.Join(", ", criteria));
+    var score = await evaluationService.BinaryScoreDetail(lat, lon, criteria, token);
     return Results.Ok(score);
 });
 
