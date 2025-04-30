@@ -30,3 +30,4 @@ web-api/.vscode/*
 !web-api/.vscode/*.code-snippets
 web-client/node_modules/
 web-client/node_modules/*
+app-data/*
