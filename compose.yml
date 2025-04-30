@@ -6,9 +6,12 @@ services:
       - "5001:5001"
     volumes:
       - ./app-data:/app/data
+      - ./logs:/logs
     environment:
       - ASPNETCORE_URLS=http://+:5001
       - ConnectionStrings__DefaultConnection=Data Source=/app/data/nq.db
+      - LOG_FILE_PATH=/logs/nq.log
+      - LOG_LEVEL=Information
 
   web-client:
     build:

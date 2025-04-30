@@ -59,17 +59,16 @@ v0.0.1: static webpage with fictional houses & attractions using basic drop-down
 
 v0.0.2: OSM API integration to populate real building/location/attraction data. Add docker compose with vanilla JS UI, API, sqlite database, and evaluation engine services.
 Infrastructure:
-- [x] Docker compose services: web client, web API, database, web server
-- [ ] Language and framework selections for all services
+- [x] Docker compose services: web client, web API, web server
+- [x] Language and framework selections for all services
 - [x] Web API Dockerfile
 - [x] Web client Dockerfile
-- [ ] Database Dockerfile?
 - [x] Web server Caddyfile for localhost
 - [x] Caching for Overpass requests
 - [x] Rate limiting for Overpass requests
 - [x] Loading indicator while requests are being processed
-- [ ] Database versioning: EF code-first or explicit scripts?
-- [ ] Logging (writing to Docker via console for now)
+- [x] Database versioning with EF code-first
+- [x] Logging with Serilog
 - [ ] Unit test framework(s)
 - [ ] Swagger page for web API with version tag dropdown properly configured and sample parameter values
 - [ ] Add version tag to web client
@@ -81,7 +80,7 @@ Business logic:
 - [x] Web client to allow dynamic addition and removal of criterion objects
 - [x] Web client to load critera from stored data via `GET /api/v0/criteria` endpoint
 - [x] Database table `Criterion` to store criteria (will need to update this later to include user linkage)
-- [ ] `POST /api/v0/criteria` endpoint to store list of criteria (will eventually be replaced with comprehensive tree) TODO check persistence of data between docker rebuilds
+- [x] `POST /api/v0/criteria` endpoint to store list of criteria (will eventually be replaced with comprehensive tree)
 - [x] Intergrate with Overpass API to perform POI lookups
 - [x] Evaluation engine to take in criteria and a target location and return a score (binary score for now, will return a continuous score later). Score is using simple distance calculation directly in Overpass query for now, this will be expanded with additional options later.
 - [x] `GET /api/v0/poi` endpoint to fetch POI data by bounding box and category and mark these points on the map

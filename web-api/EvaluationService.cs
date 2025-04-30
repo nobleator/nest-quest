@@ -4,10 +4,12 @@ namespace NestQuest.Services;
 
 public class EvaluationService
 {
+    private readonly ILogger<EvaluationService> _logger;
     private OverpassService _overpassService;
 
-    public EvaluationService(OverpassService overpassService)
+    public EvaluationService(ILogger<EvaluationService> logger, OverpassService overpassService)
     {
+        _logger = logger;
         _overpassService = overpassService;
     }
     
@@ -15,10 +17,10 @@ public class EvaluationService
     {
         // return await Task.FromResult(true);
         // TODO: pass/fail boolean result if criteria are met or not
-        Console.WriteLine($"BinaryScore evaluation...");
+        _logger.LogInformation($"BinaryScore evaluation...");
         var tasks = criteria.Select(c => _overpassService.GetCountOfMatches(c, lat, lon, token));
         var results = await Task.WhenAll(tasks);
-        Console.WriteLine($"BinaryScore evaluation completed, results: {string.Join(", ", results)}");
+        _logger.LogInformation($"BinaryScore evaluation completed, results: {string.Join(", ", results)}");
         return results.All(count => count > 0) ? 1 : 0;
     }
 
@@ -30,7 +32,7 @@ public class EvaluationService
 
     public async Task<Dictionary<int, int>> BinaryScoreDetail(double lat, double lon, IEnumerable<Criterion> criteria, CancellationToken token)
     {
-        Console.WriteLine($"BinaryScore evaluation...");
+        _logger.LogInformation($"BinaryScore evaluation...");
         var tasks = criteria.ToDictionary(
             c => c.Id,
             c => _overpassService.GetCountOfMatches(c, lat, lon, token)
@@ -38,7 +40,7 @@ public class EvaluationService
         var results = await Task.WhenAll(tasks.Values);
         var resultDictionary = criteria.Zip(results, (c, result) => new { c, result })
                                .ToDictionary(x => x.c.Id, x => x.result);
-        Console.WriteLine($"BinaryScore evaluation completed, results: {string.Join(Environment.NewLine, resultDictionary.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
+        _logger.LogInformation($"BinaryScore evaluation completed, results: {string.Join(Environment.NewLine, resultDictionary.Select(kvp => $"{kvp.Key}: {kvp.Value}"))}");
         return resultDictionary;
     }
 }

@@ -2,10 +2,12 @@ using System.Text.Json;
 
 public class CacheService<T>
 {
+    private readonly ILogger<CacheService<T>> _logger;
     private readonly AppDbContext _dbContext;
 
-    public CacheService(AppDbContext dbContext)
+    public CacheService(ILogger<CacheService<T>> logger, AppDbContext dbContext)
     {
+        _logger = logger;
         _dbContext = dbContext;
     }
 
@@ -14,11 +16,11 @@ public class CacheService<T>
         var cachedEntry = await _dbContext.CacheEntries.FindAsync(key);
         if (cachedEntry != null)
         {
-            Console.WriteLine("Cache hit!");
+            _logger.LogInformation("Cache hit!");
             return JsonSerializer.Deserialize<T>(cachedEntry.Response);
         }
 
-        Console.WriteLine("Cache miss. Fetching from source...");
+        _logger.LogInformation("Cache miss. Fetching from source...");
         T result = await fetchFromSource();
         var resultStr = JsonSerializer.Serialize(result);
         _dbContext.CacheEntries.Add(new CacheEntry

@@ -61,17 +61,19 @@ out;
 
 public class OverpassService
 {
+    private readonly ILogger<OverpassService> _logger;
     private CacheService<OverpassApiResponse> _cache;
     private readonly RateLimiter _rateLimiter;
-    public OverpassService(CacheService<OverpassApiResponse> cache, RateLimiter rateLimiter)
+    public OverpassService(ILogger<OverpassService> logger, CacheService<OverpassApiResponse> cache, RateLimiter rateLimiter)
     {
+        _logger = logger;
         _cache = cache;
         _rateLimiter = rateLimiter;
     }
     
     public async Task<IEnumerable<object>> GetPoiByCategoryAndBbox(POI.Category cat, double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
     {
-        // Console.WriteLine("Making request for Overpass data...");
+        // _logger.LogInformation("Making request for Overpass data...");
         var query = $"[out:json];node{GetTagsForCategory(cat)}({minLat},{minLon},{maxLat},{maxLon});out;";
         var response = await _cache.GetOrFetchDataAsync(query, async () => {
             return await _rateLimiter.ExecuteAsync(async () => {
@@ -79,15 +81,15 @@ public class OverpassService
                 var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
                 request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
                 request.AddParameter("data", query);
-                // Console.WriteLine("Fetching data...");
+                // _logger.LogInformation("Fetching data...");
                 return await client.PostAsync<OverpassApiResponse>(request, token);
             });
         });
-        // Console.WriteLine("Request completed.");
-        // Console.WriteLine(response);
+        // _logger.LogInformation("Request completed.");
+        // _logger.LogInformation(response);
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(response, options);
-        // Console.WriteLine(json);
+        // _logger.LogInformation(json);
         var poiLocations = response.Elements
             .Select(e => new { location = new[] { e.Lat, e.Lon }, type = cat.ToString() });
       return poiLocations;
@@ -95,25 +97,24 @@ public class OverpassService
 
     public async Task<int> GetCountOfMatches(Criterion criterion, double lat, double lon, CancellationToken token)
     {
-        Console.WriteLine("Making request for Overpass data...");
+        _logger.LogInformation("Making request for Overpass data...");
         var query = $"[out:json];node{GetTagsForCategory(criterion.Category)}(around:{criterion.Tolerance},{lat},{lon});out count;";
-        Console.WriteLine(query);
+        _logger.LogInformation(query);
         var response = await _cache.GetOrFetchDataAsync(query, async () => {
             return await _rateLimiter.ExecuteAsync(async () => {
                 var client = new RestClient();
                 var request = new RestRequest("https://www.overpass-api.de/api/interpreter");
                 request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
                 request.AddParameter("data", query);
-                Console.WriteLine("Fetching data...");
+                _logger.LogInformation("Fetching data...");
                 return await client.PostAsync<OverpassApiResponse>(request, token);
             });
         });
-        Console.WriteLine("Request completed.");
-        Console.WriteLine(response);
+        _logger.LogInformation($"Request completed: {@response}");
         var options = new JsonSerializerOptions { WriteIndented = true };
         string json = JsonSerializer.Serialize(response, options);
-        Console.WriteLine(json);
-        Console.WriteLine(string.Join(", ", response.Elements.First().Tags.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
+        _logger.LogInformation(json);
+        _logger.LogInformation(string.Join(", ", response.Elements.First().Tags.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
         return Convert.ToInt32(response.Elements.First().Tags["total"]);
     }
 

@@ -31,3 +31,4 @@ web-api/.vscode/*
 web-client/node_modules/
 web-client/node_modules/*
 app-data/*
+logs/*

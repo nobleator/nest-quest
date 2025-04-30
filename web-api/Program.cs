@@ -1,5 +1,6 @@
 using Criteria;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using NestQuest.Services;
 using OverpassApiModel;
 using POI = PointOfInterest;
@@ -14,6 +15,15 @@ builder.Services.AddSingleton(new RateLimiter(1, TimeSpan.FromSeconds(1)));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var logFilePath = Environment.GetEnvironmentVariable("LOG_FILE_PATH") ?? "/logs/app.log";
+var logLevel = Environment.GetEnvironmentVariable("LOG_LEVEL") ?? "Information";
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Is(Enum.Parse<Serilog.Events.LogEventLevel>(logLevel, true))
+    .WriteTo.Console()
+    .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -105,22 +115,23 @@ app.MapPost("/api/v0/criteria", async (CancellationToken token, AppDbContext dbC
     return Results.Ok(updatedCriteria);
 });
 
-app.MapGet("/api/v0/score", async (CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
+app.MapGet("/api/v0/score", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
 {
     var criteria = await dbContext.Criteria.ToListAsync();
-    Console.WriteLine("Loading saved criteria...");
-    Console.WriteLine(string.Join(", ", criteria));
+    logger.LogInformation("Loading saved criteria...");
+    logger.LogInformation(string.Join(", ", criteria));
     var score = await evaluationService.BinaryScore(lat, lon, criteria, token);
     return Results.Ok(score);
 });
 
-app.MapGet("/api/v0/score-detail", async (CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
+app.MapGet("/api/v0/score-detail", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
 {
     var criteria = await dbContext.Criteria.ToListAsync();
-    Console.WriteLine("Loading saved criteria...");
-    Console.WriteLine(string.Join(", ", criteria));
+    logger.LogInformation("Loading saved criteria...");
+    logger.LogInformation(string.Join(", ", criteria));
     var score = await evaluationService.BinaryScoreDetail(lat, lon, criteria, token);
     return Results.Ok(score);
 });
 
 app.Run();
+Log.CloseAndFlush();
