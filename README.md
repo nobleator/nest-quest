@@ -54,10 +54,10 @@ There are several external APIs used during operation of this extension.
 - [Overpass](https://www.overpass-api.de) for proximity calculations
 
 ## Roadmap
-v0.0.1: static webpage with fictional houses & attractions using basic drop-downs and simple OR logic for all filters.
-- [x] Basic HTML page with fake data
+v0.0.1
+- [x] Static webpage with fictional houses & attractions using basic drop-downs and simple OR logic for all filters
 
-v0.0.2: OSM API integration to populate real building/location/attraction data. Add docker compose with vanilla JS UI, API, sqlite database, and evaluation engine services.
+v0.0.2
 Infrastructure:
 - [x] Docker compose services: web client, web API, web server
 - [x] Language and framework selections for all services
@@ -90,34 +90,40 @@ Business logic:
 - [x] Add distance unit annotation
 - [x] Scale units to kilometers
 
-v0.0.3: add real property data? Add browser extension to allow overlay of Zillow?
-- [ ] Listing interface and services to fetch real property listing data from a variety of sources
+v0.0.3
+- [ ] Listing interface and services to fetch real property listing data from a variety of sources such as Zillow or Redfin
+- [ ] "Saved Places" section for ad hoc location lookup. CRUD actions, include a geocoding step to allow address lookup.
 - [ ] CI/CD
 - [ ] Add expiry time for database cache entries
 
-v0.0.4: strict query language for filters, allowing text input with complex combinations instead of all OR statements
+v0.0.4 
+- [ ] Strict query language for filters, allowing text input with complex combinations instead of all OR statements and replacing prior dropdown design
 - [ ] Add OR logic with Overpass query unions
 
-v0.1.0: 
+v0.1.0
 - [ ] Hosting model
 - [ ] Full CI/CD for all deployments, including production. Maybe use blue/green deployment process?
 - [ ] A/B version testing?
 
-v0.1.5: add data pipeline service(s) to ingest & pre-process datasets.
-- [ ]
+v0.1.1
+- [ ] Add data pipeline service(s) to ingest & pre-process datasets.
 
-v0.1.6: refactor evaluation engine to use pre-processed datasets.
-- [ ]
+v0.1.2
+- [ ] Refactor evaluation engine to use pre-processed datasets?
 
 ...
 
-v1.0.0: snap versions of all APIs, docker images, installers, etc.
-- [ ] Configure CI/CD for production release
+v1.0.0
+- [ ] Snap versions of all APIs, docker images, installers, etc.
+- [ ] Configure CI/CD for production release. Minify JavaScript, possibly refactor Dockerfiles with environment-specific layers.
 - [ ] Domain name
 - [ ] Update Caddyfile with production URL
 
 Backlog:
 - [ ] Migrate from Docker to podman
+- [ ] Server hardening: firewall config, CDN, fail2ban, VPN access
+- [ ] Browser extension
+- [ ] Mobile app with AR lens & map integration
 - [ ] Sensitivity analysis to determine constraining criteria
 - [ ] Add data with radar charts showing each listing on top of all the criteria. Dynamically generate the radar chart structure based on selected criteria
 - [ ] Weights for each criterion
@@ -125,3 +131,5 @@ Backlog:
 - [ ] Travel mode
 - [ ] Convert freeform text to structured format
 - [ ] Add brand and name search for Unknown categories
+- [ ] Accessible onboarding survey to populate initial criteria and weights
+- [ ] Pushed notifications when a home comes on the market that meets requirements 
