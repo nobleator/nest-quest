@@ -5,10 +5,10 @@ services:
     ports:
       - "5001:5001"
     volumes:
-      - app-data:/app/data
+      - ./app-data:/app/data
     environment:
       - ASPNETCORE_URLS=http://+:5001
-      - ConnectionStrings__DefaultConnection=Data Source=/app/data/app.db
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/nq.db
 
   web-client:
     build:
@@ -33,5 +33,5 @@ services:
     build:
       context: ./web-client
 
-volumes:
-  app-data:
+# volumes:
+#   app-data:

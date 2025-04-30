@@ -5,7 +5,8 @@ using OverpassApiModel;
 using POI = PointOfInterest;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite("Data Source=nq.db"));
+var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
 builder.Services.AddTransient<OverpassService>();
 builder.Services.AddTransient<EvaluationService>();
