@@ -129,14 +129,14 @@ app.MapGet("/api/v0/geocode", async (ILogger<Program> logger, CancellationToken 
     return Results.Ok(resp);
 });
 
-app.MapGet("/places", async (ILogger<Program> logger, AppDbContext dbContext) =>
+app.MapGet("/api/v0/places", async (ILogger<Program> logger, AppDbContext dbContext) =>
 {
     logger.LogInformation("Fetching all saved places");
     var places = await dbContext.Places.ToListAsync();
     return Results.Ok(places);
 });
 
-app.MapGet("/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
+app.MapGet("/api/v0/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
 {
     var place = await dbContext.Places.FirstOrDefaultAsync(p => p.Id == id);
     if (place is null)
@@ -148,7 +148,7 @@ app.MapGet("/places/{id:int}", async (int id, ILogger<Program> logger, AppDbCont
     return Results.Ok(place);
 });
 
-app.MapPost("/places", async (Place newPlace, ILogger<Program> logger, AppDbContext dbContext) =>
+app.MapPost("/api/v0/places", async (Place newPlace, ILogger<Program> logger, AppDbContext dbContext) =>
 {
     var places = await dbContext.Places.ToListAsync();
     newPlace.Id = places.Count > 0 ? places.Max(p => p.Id) + 1 : 1;
@@ -159,7 +159,7 @@ app.MapPost("/places", async (Place newPlace, ILogger<Program> logger, AppDbCont
     return Results.Created($"/places/{newPlace.Id}", newPlace);
 });
 
-app.MapPut("/places/{id:int}", async (int id, Place updatedPlace, ILogger<Program> logger, AppDbContext dbContext) =>
+app.MapPut("/api/v0/places/{id:int}", async (int id, Place updatedPlace, ILogger<Program> logger, AppDbContext dbContext) =>
 {
     var places = await dbContext.Places.ToListAsync();
     var existingPlace = places.FirstOrDefault(p => p.Id == id);
@@ -178,7 +178,7 @@ app.MapPut("/places/{id:int}", async (int id, Place updatedPlace, ILogger<Progra
     return Results.Ok(existingPlace);
 });
 
-app.MapDelete("/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
+app.MapDelete("/api/v0/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
 {
     var place = await dbContext.Places.FirstOrDefaultAsync(p => p.Id == id);
     if (place is null)
