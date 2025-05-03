@@ -4,6 +4,7 @@ using Serilog;
 using NestQuest.Services;
 using OverpassApiModel;
 using POI = PointOfInterest;
+using NominatimApiModel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -12,9 +13,11 @@ builder.Configuration
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
+builder.Services.AddScoped<CacheService<NominatimApiResponse>>();
 builder.Services.AddTransient<OverpassService>();
+builder.Services.AddTransient<NominatimService>();
 builder.Services.AddTransient<EvaluationService>();
-builder.Services.AddSingleton(new RateLimiter(1, TimeSpan.FromSeconds(1)));
+builder.Services.AddSingleton(new RateLimiter(1, TimeSpan.FromSeconds(1.1)));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -117,6 +120,13 @@ app.MapGet("/api/v0/score-detail", async (ILogger<Program> logger, CancellationT
     logger.LogInformation(string.Join(", ", criteria));
     var score = await evaluationService.BinaryScoreDetail(lat, lon, criteria, token);
     return Results.Ok(score);
+});
+
+app.MapGet("/api/v0/geocode", async (ILogger<Program> logger, CancellationToken token, NominatimService nominatimService, string address) =>
+{
+    logger.LogInformation($"Geocoding address: {address}");
+    var resp = await nominatimService.Geocode(address, token);
+    return Results.Ok(resp);
 });
 
 app.MapGet("/places", async (ILogger<Program> logger, AppDbContext dbContext) =>
