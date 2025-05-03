@@ -6,6 +6,9 @@ using OverpassApiModel;
 using POI = PointOfInterest;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration
+    .AddJsonFile($"appsettings.Local.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
@@ -114,6 +117,69 @@ app.MapGet("/api/v0/score-detail", async (ILogger<Program> logger, CancellationT
     logger.LogInformation(string.Join(", ", criteria));
     var score = await evaluationService.BinaryScoreDetail(lat, lon, criteria, token);
     return Results.Ok(score);
+});
+
+app.MapGet("/places", async (ILogger<Program> logger, AppDbContext dbContext) =>
+{
+    logger.LogInformation("Fetching all saved places");
+    var places = await dbContext.Places.ToListAsync();
+    return Results.Ok(places);
+});
+
+app.MapGet("/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
+{
+    var place = await dbContext.Places.FirstOrDefaultAsync(p => p.Id == id);
+    if (place is null)
+    {
+        logger.LogWarning("Place with ID {Id} not found", id);
+        return Results.NotFound($"Place with ID {id} not found.");
+    }
+    logger.LogInformation("Fetched place with ID {Id}", id);
+    return Results.Ok(place);
+});
+
+app.MapPost("/places", async (Place newPlace, ILogger<Program> logger, AppDbContext dbContext) =>
+{
+    var places = await dbContext.Places.ToListAsync();
+    newPlace.Id = places.Count > 0 ? places.Max(p => p.Id) + 1 : 1;
+    places.Add(newPlace);
+    await dbContext.AddAsync(newPlace);
+    await dbContext.SaveChangesAsync();
+    logger.LogInformation("Added new place with ID {Id}", newPlace.Id);
+    return Results.Created($"/places/{newPlace.Id}", newPlace);
+});
+
+app.MapPut("/places/{id:int}", async (int id, Place updatedPlace, ILogger<Program> logger, AppDbContext dbContext) =>
+{
+    var places = await dbContext.Places.ToListAsync();
+    var existingPlace = places.FirstOrDefault(p => p.Id == id);
+    if (existingPlace is null)
+    {
+        logger.LogWarning("Attempt to update non-existent place with ID {Id}", id);
+        return Results.NotFound($"Place with ID {id} not found.");
+    }
+    existingPlace.Name = updatedPlace.Name;
+    existingPlace.Address = updatedPlace.Address;
+    existingPlace.Latitude = updatedPlace.Latitude;
+    existingPlace.Longitude = updatedPlace.Longitude;
+    dbContext.Places.Update(existingPlace);
+    await dbContext.SaveChangesAsync();
+    logger.LogInformation("Updated place with ID {Id}", id);
+    return Results.Ok(existingPlace);
+});
+
+app.MapDelete("/places/{id:int}", async (int id, ILogger<Program> logger, AppDbContext dbContext) =>
+{
+    var place = await dbContext.Places.FirstOrDefaultAsync(p => p.Id == id);
+    if (place is null)
+    {
+        logger.LogWarning("Attempt to delete non-existent place with ID {Id}", id);
+        return Results.NotFound($"Place with ID {id} not found.");
+    }
+    dbContext.Places.Remove(place);
+    await dbContext.SaveChangesAsync();
+    logger.LogInformation("Deleted place with ID {Id}", id);
+    return Results.NoContent();
 });
 
 app.Run();

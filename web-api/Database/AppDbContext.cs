@@ -5,6 +5,7 @@ public class AppDbContext : DbContext
 {
     public DbSet<CacheEntry> CacheEntries { get; set; }
     public DbSet<Criterion> Criteria { get; set; }
+    public DbSet<Place> Places { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -14,5 +15,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<CacheEntry>().HasKey(c => c.Parameters);
         modelBuilder.Entity<Criterion>().HasKey(c => c.Id);
+        modelBuilder.Entity<Place>().HasKey(c => c.Id);
     }
 }
