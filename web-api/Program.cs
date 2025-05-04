@@ -13,7 +13,7 @@ builder.Configuration
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
-builder.Services.AddScoped<CacheService<NominatimApiResponse>>();
+builder.Services.AddScoped<CacheService<List<NominatimApiResponse>>>();
 builder.Services.AddTransient<OverpassService>();
 builder.Services.AddTransient<NominatimService>();
 builder.Services.AddTransient<EvaluationService>();

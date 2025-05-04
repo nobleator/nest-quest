@@ -136,3 +136,106 @@ export class RadarChartState {
         this.chart.update();
     }
 }
+
+function displaySuggestedAddresses(addresses) {
+    const suggestionsTableBody = document.getElementById('suggested-addresses').querySelector('tbody');
+    suggestionsTableBody.innerHTML = '';
+  
+    addresses.forEach(place => {
+        const row = document.createElement('tr');
+    
+        const addressCell = document.createElement('td');
+        addressCell.textContent = place.address;
+        row.appendChild(addressCell);
+    
+        const actionCell = document.createElement('td');
+        const addButton = document.createElement('button');
+        addButton.textContent = '+';
+        addButton.addEventListener('click', () => {
+            savePlaceToBackend(place);
+            row.remove();
+        });
+        actionCell.appendChild(addButton);
+        row.appendChild(actionCell);
+    
+        suggestionsTableBody.appendChild(row);
+    });
+}
+
+async function savePlaceToBackend(place) {
+    try {
+        const response = await fetch(`/api/v0/places`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(place)
+        });
+
+        if (!response.ok) throw new Error('Failed to save place.');
+
+        const savedPlace = await response.json();
+        addRowToTable(savedPlace);
+    } catch (error) {
+        console.error(error);
+        alert('Error saving place. Please try again.');
+    }
+}
+  
+export function addRowToTable(place) {
+    const tableBody = document.getElementById('savedPlacesTable').querySelector('tbody');
+  
+    const row = document.createElement('tr');
+    row.dataset.id = place.id;
+  
+    const addressCell = document.createElement('td');
+    addressCell.textContent = place.address;
+    row.appendChild(addressCell);
+  
+    const actionCell = document.createElement('td');
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = '&times;';
+    deleteButton.addEventListener('click', () => deleteRow(row, place.id));
+    actionCell.appendChild(deleteButton);
+    row.appendChild(actionCell);
+  
+    tableBody.appendChild(row);
+}
+  
+async function deleteRow(row, id) {
+    try {
+        const response = await fetch(`/api/v0/places/${id}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete place.');
+
+        row.remove();
+    } catch (error) {
+        console.error(error);
+        alert('Error deleting place. Please try again.');
+    }
+}
+
+export async function handleSearch() {
+    const addressInput = document.getElementById('addressInput').value;
+    if (!addressInput.trim()) {
+        alert('Please enter a valid address.');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/v0/geocode?address=${encodeURIComponent(addressInput)}`);
+        if (!response.ok) throw new Error('Failed to fetch geocode data.');
+    
+        const data = await response.json();
+        displaySuggestedAddresses(data);
+        openModal();
+    } catch (error) {
+        console.error(error);
+        alert('Error fetching data. Please try again.');
+    }
+}
+
+function openModal() {
+    document.getElementById('suggested-modal').style.display = 'block';
+}
+
+export function closeModal() {
+    document.getElementById('suggested-modal').style.display = 'none';
+}

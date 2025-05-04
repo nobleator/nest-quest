@@ -11,6 +11,20 @@
   <div id="loading-overlay" class="loading-overlay">
     <div class="spinner"></div>
   </div>
+  <div id="suggested-modal">
+    <div>
+      <button id="close-modal">&times;</button>
+      <table id="suggested-addresses">
+        <thead>
+          <tr>
+            <th>Address</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
   <div class="container">
     <div class="left">
       <div class="guide-container">
@@ -32,6 +46,23 @@
             <sup>*</sup>For now, these homes are fake. But we plan to expand this to sync with your favorite online real estate listing systems such as Redfin or Zillow.
           </p>
         </div>
+      </div>
+      <div id="savedPlacesSection">
+        <h2>Saved Places</h2>
+        <div class="inputContainer">
+          <input type="text" id="addressInput" placeholder="Enter an address...">
+          <button id="searchButton">Search</button>
+        </div>
+      
+        <table id="savedPlacesTable">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
       <h2>Homes</h2>
       <div>

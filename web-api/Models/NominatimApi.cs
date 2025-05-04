@@ -46,15 +46,15 @@ public class NominatimApiResponse
     [JsonPropertyName("boundingbox")]
     public List<string> BoundingBox { get; set; }
 
-    [JsonPropertyName("geojson")]
-    public GeoJson GeoJson { get; set; }
+    // [JsonPropertyName("geojson")]
+    // public GeoJson GeoJson { get; set; }
 }
 
-public class GeoJson
-{
-    [JsonPropertyName("type")]
-    public string Type { get; set; }
+// public class GeoJson
+// {
+//     [JsonPropertyName("type")]
+//     public string Type { get; set; }
 
-    [JsonPropertyName("coordinates")]
-    public List<List<List<double>>> Coordinates { get; set; }
-}
+//     [JsonPropertyName("coordinates")]
+//     public List<List<List<double>>> Coordinates { get; set; }
+// }
