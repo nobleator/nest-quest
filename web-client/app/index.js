@@ -9,8 +9,8 @@ const radarChartState = new RadarChartState();
 document.addEventListener("DOMContentLoaded", async () => {
     updateSubmitButtonState(false);
     await initDropdowns();
-    document.getElementById('addButton').addEventListener('click', addDropdown);
-    document.getElementById('submitButton').addEventListener('click', async () => {
+    document.getElementById('add-button').addEventListener('click', addDropdown);
+    document.getElementById('submit-button').addEventListener('click', async () => {
         showLoading();
         await saveCriteria();
         await handleSubmit(mapState, radarChartState);
@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const content = document.getElementById('guide-content');
         content.classList.toggle('hidden');
     });
-    document.getElementById('mapTabButton').addEventListener('click', () => switchTab('map'));
-    document.getElementById('analyticsTabButton').addEventListener('click', () => switchTab('analytics'));
+    document.getElementById('map-tab-button').addEventListener('click', () => switchTab('map'));
+    document.getElementById('analytics-tab-button').addEventListener('click', () => switchTab('analytics'));
 
     try {
         const response = await fetch(`/api/v0/places`);
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error(error);
         alert('Error loading saved places. Please try again.');
     }
-    document.getElementById('searchButton').addEventListener('click', handleSearch);
+    document.getElementById('search-button').addEventListener('click', handleSearch);
     document.getElementById('close-modal').addEventListener('click', closeModal);
 
     mapState.initMap();

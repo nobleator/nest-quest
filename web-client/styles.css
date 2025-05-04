@@ -23,7 +23,7 @@ body {
     height: 100%;
     box-sizing: border-box;
 }
-#map, #mapContainer, #analytics, #analyticsContainer {
+#map, #map-container, #analytics, #analytics-container {
     width: 100%;
     height: 100%;
 }
@@ -83,7 +83,7 @@ button {
     width: 100%;
     margin: 20px auto;
 }
-#addressInput {
+#address-input {
     flex: 1;
 }
 .loading-overlay {
@@ -126,7 +126,7 @@ button {
     color: #000;
 }
 
-#savedPlacesTable {
+#saved-places-table {
     border-collapse: collapse;
 }
 

@@ -37,9 +37,9 @@ async function refreshHomeScores(mapState, radarChartState) {
     const homesData = await fetch(`/api/v0/homes?${queryString}`).then(res => res.json());
 
     // TODO: move to ui.js?
-    const matchedHomeList = document.getElementById('matchedHomes');
+    const matchedHomeList = document.getElementById('matched-homes');
     matchedHomeList.innerHTML = '';
-    const unmatchedHomeList = document.getElementById('unmatchedHomes');
+    const unmatchedHomeList = document.getElementById('unmatched-homes');
     unmatchedHomeList.innerHTML = '';
     mapState.homeMarkerLayer.clearLayers();
     let scoreDetails = [];

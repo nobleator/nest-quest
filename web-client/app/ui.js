@@ -1,10 +1,10 @@
 export function updateSubmitButtonState(enabled=true) {
-    const button = document.getElementById('submitButton');
+    const button = document.getElementById('submit-button');
     button.disabled = !enabled;
 }
 
 export function addDropdown() {
-    const dropdownContainer = document.getElementById('dropdownContainer');
+    const dropdownContainer = document.getElementById('dropdown-container');
     const newDropdown = document.createElement('div');
     newDropdown.classList.add('dropdown-container');
     newDropdown.innerHTML = `
@@ -45,7 +45,7 @@ export async function initDropdowns() {
         if (!response.ok) throw new Error('Failed to fetch criteria');
         
         const criteria = await response.json();
-        const dropdownContainer = document.getElementById('dropdownContainer');
+        const dropdownContainer = document.getElementById('dropdown-container');
         dropdownContainer.innerHTML = '';
 
         criteria.forEach(criterion => {
@@ -70,10 +70,10 @@ export function hideLoading() {
 }
 
 export function switchTab(tab) {
-    const mapTab = document.getElementById('mapTabButton');
-    const analyticsTab = document.getElementById('analyticsTabButton');
-    const mapContainer = document.getElementById('mapContainer');
-    const analyticsContainer = document.getElementById('analyticsContainer');
+    const mapTab = document.getElementById('map-tab-button');
+    const analyticsTab = document.getElementById('analytics-tab-button');
+    const mapContainer = document.getElementById('map-container');
+    const analyticsContainer = document.getElementById('analytics-container');
     if (tab === 'map') {
         analyticsContainer.classList.remove('active');
         mapContainer.classList.add('active');
@@ -181,7 +181,7 @@ async function savePlaceToBackend(place) {
 }
   
 export function addRowToTable(place) {
-    const tableBody = document.getElementById('savedPlacesTable').querySelector('tbody');
+    const tableBody = document.getElementById('saved-places-table').querySelector('tbody');
   
     const row = document.createElement('tr');
     row.dataset.id = place.id;
@@ -213,7 +213,7 @@ async function deleteRow(row, id) {
 }
 
 export async function handleSearch() {
-    const addressInput = document.getElementById('addressInput').value;
+    const addressInput = document.getElementById('address-input').value;
     if (!addressInput.trim()) {
         alert('Please enter a valid address.');
         return;
