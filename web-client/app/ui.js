@@ -24,7 +24,7 @@ export function addDropdown() {
             <option value="11">Fire Station</option>
         </select>
         <label><input type="number" class="threshold" /> (km)</label>
-        <button onclick="removeDropdown(this)">Remove</button>
+        <button onclick="removeDropdown(this)">&times;</button>
     `;
     dropdownContainer.appendChild(newDropdown);
     updateSubmitButtonState(true);
