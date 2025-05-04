@@ -140,15 +140,22 @@ button {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2000;
 }
-#suggested-modal > div {
-    background: white;
-    margin: auto;
-    padding: 20px;
+#suggested-modal .modal-content {
     position: relative;
-    max-width: 400px;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    text-align: center;
 }
 #close-modal {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+#suggested-addresses > thead > tr > th {
+    padding-bottom: 1em;
 }
