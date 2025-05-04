@@ -149,7 +149,6 @@ button {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-    text-align: center;
 }
 #close-modal {
     position: absolute;
@@ -157,5 +156,9 @@ button {
     right: 10px;
 }
 #suggested-addresses > thead > tr > th {
+    padding-bottom: 1em;
+}
+
+td {
     padding-bottom: 1em;
 }
