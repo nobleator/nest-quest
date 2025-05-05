@@ -132,4 +132,5 @@ Backlog:
 - [ ] Convert freeform text to structured format
 - [ ] Add brand and name search for Unknown categories
 - [ ] Accessible onboarding survey to populate initial criteria and weights
-- [ ] Pushed notifications when a home comes on the market that meets requirements 
+- [ ] Pushed notifications when a home comes on the market that meets requirements
+- [ ] Add dynamic tooltips (delayed hover to reveal + explicit close button) to guide users
