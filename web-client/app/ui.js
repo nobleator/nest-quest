@@ -24,14 +24,16 @@ export function addDropdown() {
             <option value="11">Fire Station</option>
         </select>
         <label><input type="number" class="threshold" /> (km)</label>
-        <button onclick="removeDropdown(this)">&times;</button>
+        <button class="remove-button">&times;</button>
     `;
     dropdownContainer.appendChild(newDropdown);
+    const removeButton = newDropdown.querySelector('.remove-button');
+    removeButton.addEventListener('click', () => removeDropdown(removeButton));
     updateSubmitButtonState(true);
     return newDropdown;
 }
 
-export function removeDropdown(button) {
+function removeDropdown(button) {
     const dropdownDiv = button.parentElement;
     dropdownDiv.remove();
     if (document.querySelectorAll('.dropdown').length === 0) {
