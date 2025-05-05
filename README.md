@@ -78,7 +78,7 @@ Business logic:
 - [x] `Criterion` object with category, tolerance, unit, and sign/direction properties (will add weights and travel mode later)
 - [x] Point of interest categories defined via enum, including Unknown option
 - [x] Web client to allow dynamic addition and removal of criterion objects
-- [x] Web client to load critera from stored data via `GET /api/v0/criteria` endpoint
+- [x] Web client to load criteria from stored data via `GET /api/v0/criteria` endpoint
 - [x] Database table `Criterion` to store criteria (will need to update this later to include user linkage)
 - [x] `POST /api/v0/criteria` endpoint to store list of criteria (will eventually be replaced with comprehensive tree)
 - [x] Intergrate with Overpass API to perform POI lookups
@@ -89,10 +89,10 @@ Business logic:
 - [x] Split matching homes into a separate list from unmatched homes
 - [x] Add distance unit annotation
 - [x] Scale units to kilometers
+- [x] "Saved Places" section for ad hoc location lookup. CRUD actions, include a geocoding step to allow address lookup.
 
 v0.0.3
 - [ ] Listing interface and services to fetch real property listing data from a variety of sources such as Zillow or Redfin
-- [ ] "Saved Places" section for ad hoc location lookup. CRUD actions, include a geocoding step to allow address lookup.
 - [ ] CI/CD
 - [ ] Add expiry time for database cache entries
 
