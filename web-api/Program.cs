@@ -88,6 +88,19 @@ app.MapPost("/api/v0/criteria", async (CancellationToken token, AppDbContext dbC
     if (dto == null || dto.Criteria.Count == 0)
         return Results.BadRequest("Criteria list is empty or null.");
 
+    var incomingIds = dto.Criteria.Select(c => c.Id).ToList();
+    var existingCriteriaIds = await dbContext.Criteria.Select(c => c.Id).ToListAsync(token);
+
+    var idsToDelete = existingCriteriaIds.Except(incomingIds).ToList();
+
+    if (idsToDelete.Any())
+    {
+        var criteriaToDelete = await dbContext.Criteria
+            .Where(c => idsToDelete.Contains(c.Id))
+            .ToListAsync(token);
+        dbContext.Criteria.RemoveRange(criteriaToDelete);
+    }
+
     foreach (var criterion in dto.Criteria)
     {
         var existingCriterion = await dbContext.Criteria.FindAsync(criterion.Id, token);
