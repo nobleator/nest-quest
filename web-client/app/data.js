@@ -34,7 +34,13 @@ async function refreshHomeScores(mapState, radarChartState) {
         maxLon: bounds.getEast()
     };
     const queryString = new URLSearchParams(params).toString();
-    const homesData = await fetch(`/api/v0/homes?${queryString}`).then(res => res.json());
+    const unifiedData = await Promise.all([
+        fetch(`/api/v0/homes?${queryString}`).then(res => res.json()),
+        fetch('/api/v0/places').then(res => res.json())
+    ]).then(([homesData, placesData]) => [
+        ...homesData.map(h => ({ displayName: h.displayName, lat: h.lat, lon: h.lon })),
+        ...placesData.map(p => ({ displayName: p.address, lat: p.latitude, lon: p.longitude }))
+    ]);
 
     // TODO: move to ui.js?
     const matchedHomeList = document.getElementById('matched-homes');
@@ -43,24 +49,24 @@ async function refreshHomeScores(mapState, radarChartState) {
     unmatchedHomeList.innerHTML = '';
     mapState.homeMarkerLayer.clearLayers();
     let scoreDetails = [];
-    const results = await Promise.all(homesData.map(async (home) => {
+    const results = await Promise.all(unifiedData.map(async (elem) => {
         const score = await fetch(`/api/v0/score?${new URLSearchParams({
-            lat: home.lat,
-            lon: home.lon
+            lat: elem.lat,
+            lon: elem.lon
         }).toString()}`).then(res => res.json());
-        home.score = score;
+        elem.score = score;
 
         const detail = await fetch(`/api/v0/score-detail?${new URLSearchParams({
-            lat: home.lat,
-            lon: home.lon
+            lat: elem.lat,
+            lon: elem.lon
         }).toString()}`).then(res => res.json());
         const array = Object.keys(radarChartState.labelDict).map(id => detail[id]);
         scoreDetails.push({
-            label: home.displayName,
+            label: elem.displayName,
             data: array,
             // fill: true
         });
-        return home;
+        return elem;
     }));
 
     await radarChartState.update(scoreDetails);
