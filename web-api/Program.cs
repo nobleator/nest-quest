@@ -1,5 +1,6 @@
 using Criteria;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 using NestQuest.Services;
 using OverpassApiModel;
@@ -8,9 +9,11 @@ using NominatimApiModel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
+    .AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.Local.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.Configure<GeneralSettings>(builder.Configuration.GetSection("General"));
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
 builder.Services.AddScoped<CacheService<List<NominatimApiResponse>>>();
@@ -21,7 +24,6 @@ builder.Services.AddTransient<IListingService, PlaceholderService>();
 builder.Services.AddTransient<IListingService, ZillowService>();
 builder.Services.AddSingleton<ListingServiceFactory>();
 builder.Services.AddSingleton(new RateLimiter(1, TimeSpan.FromSeconds(1.1)));
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -43,7 +45,11 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseSwagger();
-app.UseSwaggerUI(); 
+app.UseSwaggerUI();
+
+app.MapGet("/api/v0/health", (IOptions<GeneralSettings> settings) => {
+    return Results.Ok(settings.Value);
+});
 
 app.MapGet("/api/v0/homes", async (ListingServiceFactory factory, double minLon, double minLat, double maxLon, double maxLat) => {
     var tasks = factory.GetAllServices().Select(service => service.GetListingsByBbox(minLon, minLat, maxLon, maxLat));
