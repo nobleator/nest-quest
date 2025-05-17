@@ -71,9 +71,10 @@ Infrastructure:
 - [x] Logging with Serilog
 - [ ] Unit test framework(s)
 - [ ] Swagger page for web API with version tag dropdown properly configured and sample parameter values
-- [ ] Add version tag to web client
+- [x] Add version tag to web client
 - [ ] Add version tag to web API headers
-- [ ] Add healthcheck endpoint to web API, including version tag
+- [x] Add healthcheck endpoint to web API, including version tag
+
 Business logic:
 - [x] `Criterion` object with category, tolerance, unit, and sign/direction properties (will add weights and travel mode later)
 - [x] Point of interest categories defined via enum, including Unknown option
