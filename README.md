@@ -69,7 +69,7 @@ Infrastructure:
 - [x] Loading indicator while requests are being processed
 - [x] Database versioning with EF code-first
 - [x] Logging with Serilog
-- [ ] Unit test framework(s)
+- [x] Unit test framework(s)
 - [ ] Swagger page for web API with version tag dropdown properly configured and sample parameter values
 - [x] Add version tag to web client
 - [ ] Add version tag to web API headers
