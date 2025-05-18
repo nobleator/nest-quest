@@ -3,14 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NestQuestApi.Database;
 
 #nullable disable
 
 namespace NestQuestApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250324002734_UpdateSchema2")]
-    partial class UpdateSchema2
+    [Migration("20250518140608_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +19,7 @@ namespace NestQuestApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("CacheEntry", b =>
+            modelBuilder.Entity("NestQuestApi.Models.CacheEntry", b =>
                 {
                     b.Property<string>("Parameters")
                         .HasColumnType("TEXT");
@@ -31,7 +32,7 @@ namespace NestQuestApi.Migrations
                     b.ToTable("CacheEntries");
                 });
 
-            modelBuilder.Entity("Criterion", b =>
+            modelBuilder.Entity("NestQuestApi.Models.Criterion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,8 +44,8 @@ namespace NestQuestApi.Migrations
                     b.Property<int>("Direction")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Tolerance")
-                        .HasColumnType("INTEGER");
+                    b.Property<decimal>("Tolerance")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Unit")
                         .HasColumnType("INTEGER");
@@ -52,6 +53,29 @@ namespace NestQuestApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Criteria");
+                });
+
+            modelBuilder.Entity("NestQuestApi.Models.Place", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Places");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
-using PointOfInterest;
-using Utilities;
+using NestQuestApi.Utilities;
 
-namespace Criteria;
+namespace NestQuestApi.Models;
 
 public class CriteriaModel
 {

@@ -1,13 +1,14 @@
-using Criteria;
+using NestQuestApi.Models;
+using NestQuestApi.Interfaces;
 
-namespace NestQuest.Services;
+namespace NestQuestApi.Services;
 
-public class EvaluationService
+public class EvaluationService : IEvaluationService
 {
     private readonly ILogger<EvaluationService> _logger;
-    private OverpassService _overpassService;
+    private IOverpassService _overpassService;
 
-    public EvaluationService(ILogger<EvaluationService> logger, OverpassService overpassService)
+    public EvaluationService(ILogger<EvaluationService> logger, IOverpassService overpassService)
     {
         _logger = logger;
         _overpassService = overpassService;

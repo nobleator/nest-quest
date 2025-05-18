@@ -1,5 +1,7 @@
-using Criteria;
+using NestQuestApi.Models;
 using Microsoft.EntityFrameworkCore;
+
+namespace NestQuestApi.Database;
 
 public class AppDbContext : DbContext
 {

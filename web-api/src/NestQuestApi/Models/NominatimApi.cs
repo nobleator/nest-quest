@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace NominatimApiModel;
+namespace NestQuestApi.Models;
 
 public class NominatimApiResponse
 {

@@ -1,3 +1,5 @@
+namespace NestQuestApi.Models;
+
 public record class Place
 {
     public int Id { get; set; }

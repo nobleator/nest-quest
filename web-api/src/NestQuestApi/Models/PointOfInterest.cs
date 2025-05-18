@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace PointOfInterest;
+namespace NestQuestApi.Models;
 
 public class PointOfInterest
 {

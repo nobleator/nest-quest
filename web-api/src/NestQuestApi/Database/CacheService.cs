@@ -1,4 +1,7 @@
 using System.Text.Json;
+using NestQuestApi.Models;
+
+namespace NestQuestApi.Database;
 
 public class CacheService<T>
 {

@@ -1,10 +1,11 @@
 using RestSharp;
 using System.Text.Json;
-using OverpassApiModel;
-using POI = PointOfInterest;
-using Criteria;
+using NestQuestApi.Database;
+using NestQuestApi.Models;
+using NestQuestApi.Interfaces;
+using NestQuestApi.Utilities;
 
-namespace NestQuest.Services;
+namespace NestQuestApi.Services;
 
 /*
 These examples can be run via Overpass turbo (https://overpass-turbo.eu/).
@@ -59,7 +60,7 @@ out;
 ```
 */
 
-public class OverpassService
+public class OverpassService : IOverpassService
 {
     private readonly ILogger<OverpassService> _logger;
     private CacheService<OverpassApiResponse> _cache;
@@ -71,7 +72,7 @@ public class OverpassService
         _rateLimiter = rateLimiter;
     }
     
-    public async Task<IEnumerable<object>> GetPoiByCategoryAndBbox(POI.Category cat, double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
+    public async Task<IEnumerable<object>> GetPoiByCategoryAndBbox(Category cat, double minLon, double minLat, double maxLon, double maxLat, CancellationToken token)
     {
         // _logger.LogInformation("Making request for Overpass data...");
         var query = $"[out:json];node{GetTagsForCategory(cat)}({minLat},{minLon},{maxLat},{maxLon});out;";
@@ -118,18 +119,18 @@ public class OverpassService
         return Convert.ToInt32(response.Elements.First().Tags["total"]);
     }
 
-    private static string GetTagsForCategory(POI.Category category) => category switch
+    private static string GetTagsForCategory(Category category) => category switch
     {
-        POI.Category.Park => "[leisure=park]",
-        POI.Category.Library => "[amenity=library]",
-        POI.Category.School => "[amenity=school]",
-        POI.Category.Grocery => "[shop=supermarket]",
-        POI.Category.CoffeeShop => "[amenity=cafe][cuisine=coffee_shop]",
-        POI.Category.Airport => "[aeroway=terminal]",
-        POI.Category.TrainStation => "[building=train_station]",
-        POI.Category.BusStation => "[amenity=bus_station]",
-        POI.Category.PoliceStation => "[amenity=police]",
-        POI.Category.FireStation => "[amenity=fire_station]",
+        Category.Park => "[leisure=park]",
+        Category.Library => "[amenity=library]",
+        Category.School => "[amenity=school]",
+        Category.Grocery => "[shop=supermarket]",
+        Category.CoffeeShop => "[amenity=cafe][cuisine=coffee_shop]",
+        Category.Airport => "[aeroway=terminal]",
+        Category.TrainStation => "[building=train_station]",
+        Category.BusStation => "[amenity=bus_station]",
+        Category.PoliceStation => "[amenity=police]",
+        Category.FireStation => "[amenity=fire_station]",
         _ => "TODO"
     };
 }

@@ -1,6 +1,8 @@
-using Models;
 
-namespace NestQuest.Services;
+using NestQuestApi.Models;
+using NestQuestApi.Interfaces;
+
+namespace NestQuestApi.Services;
 
 public class PlaceholderService : IListingService
 {

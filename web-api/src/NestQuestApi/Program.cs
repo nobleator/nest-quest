@@ -1,11 +1,12 @@
-using Criteria;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
-using NestQuest.Services;
-using OverpassApiModel;
-using POI = PointOfInterest;
-using NominatimApiModel;
+using NestQuestApi.Database;
+using NestQuestApi.Models;
+using NestQuestApi.Interfaces;
+using NestQuestApi.Services;
+using NestQuestApi.Factories;
+using NestQuestApi.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -17,9 +18,9 @@ builder.Services.Configure<GeneralSettings>(builder.Configuration.GetSection("Ge
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlite(connString));
 builder.Services.AddScoped<CacheService<OverpassApiResponse>>();
 builder.Services.AddScoped<CacheService<List<NominatimApiResponse>>>();
-builder.Services.AddTransient<OverpassService>();
+builder.Services.AddTransient<IOverpassService, OverpassService>();
 builder.Services.AddTransient<NominatimService>();
-builder.Services.AddTransient<EvaluationService>();
+builder.Services.AddTransient<IEvaluationService, EvaluationService>();
 builder.Services.AddTransient<IListingService, PlaceholderService>();
 builder.Services.AddTransient<IListingService, ZillowService>();
 builder.Services.AddSingleton<ListingServiceFactory>();
@@ -59,7 +60,7 @@ app.MapGet("/api/v0/homes", async (ListingServiceFactory factory, double minLon,
 });
 
 // /api/v0/poi?cat=Park&minLat=51.47528888311576&maxLat=51.53459069801548&minLon=-0.1544952392578125&maxLon=-0.025577545166015625
-app.MapGet("/api/v0/poi", async (CancellationToken token, OverpassService overpassService, POI.Category cat, double minLon, double minLat, double maxLon, double maxLat) =>
+app.MapGet("/api/v0/poi", async (CancellationToken token, IOverpassService overpassService, Category cat, double minLon, double minLat, double maxLon, double maxLat) =>
 {
     var poi = await overpassService.GetPoiByCategoryAndBbox(cat, minLon, minLat, maxLon, maxLat, token);
     return Results.Ok(poi);
@@ -106,7 +107,7 @@ app.MapPost("/api/v0/criteria", async (CancellationToken token, AppDbContext dbC
     return Results.Ok(updatedCriteria);
 });
 
-app.MapGet("/api/v0/score", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
+app.MapGet("/api/v0/score", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, IEvaluationService evaluationService, double lat, double lon) =>
 {
     var criteria = await dbContext.Criteria.ToListAsync();
     logger.LogInformation("Loading saved criteria...");
@@ -115,7 +116,7 @@ app.MapGet("/api/v0/score", async (ILogger<Program> logger, CancellationToken to
     return Results.Ok(score);
 });
 
-app.MapGet("/api/v0/score-detail", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, EvaluationService evaluationService, double lat, double lon) =>
+app.MapGet("/api/v0/score-detail", async (ILogger<Program> logger, CancellationToken token, AppDbContext dbContext, IEvaluationService evaluationService, double lat, double lon) =>
 {
     var criteria = await dbContext.Criteria.ToListAsync();
     logger.LogInformation("Loading saved criteria...");

@@ -1,4 +1,4 @@
-namespace NestQuest.Services;
+namespace NestQuestApi.Utilities;
 
 public class RateLimiter
 {

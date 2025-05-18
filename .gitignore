@@ -22,6 +22,8 @@ app.tests/obj
 
 web-api/src/*/bin
 web-api/src/*/obj
+web-api/tests/*/bin
+web-api/tests/*/obj
 web-api/.vscode/*
 !web-api/.vscode/settings.json
 !web-api/.vscode/tasks.json

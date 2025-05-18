@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace OverpassApiModel;
+namespace NestQuestApi.Models;
 
 public class OverpassApiResponse
 {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NestQuestApi.Database;
 
 #nullable disable
 
@@ -15,7 +16,7 @@ namespace NestQuestApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("CacheEntry", b =>
+            modelBuilder.Entity("NestQuestApi.Models.CacheEntry", b =>
                 {
                     b.Property<string>("Parameters")
                         .HasColumnType("TEXT");
@@ -28,7 +29,7 @@ namespace NestQuestApi.Migrations
                     b.ToTable("CacheEntries");
                 });
 
-            modelBuilder.Entity("Criteria.Criterion", b =>
+            modelBuilder.Entity("NestQuestApi.Models.Criterion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +52,7 @@ namespace NestQuestApi.Migrations
                     b.ToTable("Criteria");
                 });
 
-            modelBuilder.Entity("Place", b =>
+            modelBuilder.Entity("NestQuestApi.Models.Place", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

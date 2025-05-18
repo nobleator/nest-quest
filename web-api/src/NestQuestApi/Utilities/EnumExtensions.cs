@@ -1,8 +1,6 @@
-using System;
 using System.ComponentModel;
-using System.Linq;
 
-namespace Utilities;
+namespace NestQuestApi.Utilities;
 
 public static class EnumExtensions
 {

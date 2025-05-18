@@ -1,4 +1,6 @@
-namespace NestQuest.Services;
+using NestQuestApi.Interfaces;
+
+namespace NestQuestApi.Factories;
 
 public class ListingServiceFactory
 {

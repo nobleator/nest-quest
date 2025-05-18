@@ -1,6 +1,7 @@
-using Models;
+using NestQuestApi.Models;
+using NestQuestApi.Interfaces;
 
-namespace NestQuest.Services;
+namespace NestQuestApi.Services;
 
 public class ZillowService : IListingService
 {

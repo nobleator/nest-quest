@@ -1,3 +1,5 @@
+namespace NestQuestApi.Models;
+
 public class CacheEntry
 {
     public string Parameters { get; set; }

@@ -1,6 +1,6 @@
-using Models;
+using NestQuestApi.Models;
 
-namespace NestQuest.Services;
+namespace NestQuestApi.Interfaces;
 
 public interface IListingService
 {

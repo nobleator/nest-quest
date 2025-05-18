@@ -1,7 +1,9 @@
 using RestSharp;
-using NominatimApiModel;
+using NestQuestApi.Database;
+using NestQuestApi.Models;
+using NestQuestApi.Utilities;
 
-namespace NestQuest.Services;
+namespace NestQuestApi.Services;
 
 public class NominatimService
 {
