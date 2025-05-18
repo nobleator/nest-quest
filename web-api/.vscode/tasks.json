@@ -7,7 +7,7 @@
         "type": "process",
         "args": [
             "build",
-            "${workspaceFolder}/NestQuestApi.csproj"
+            "${workspaceFolder}/src/NestQuestApi/NestQuestApi.csproj"
         ],
         "problemMatcher": "$msCompile",
         "group": {

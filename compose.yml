@@ -1,7 +1,7 @@
 services:
   web-api:
     build:
-      context: ./web-api
+      context: ./web-api/src/NestQuestApi
     ports:
       - "5001:5001"
     volumes:
